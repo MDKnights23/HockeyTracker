@@ -1,8 +1,11 @@
-library(shiny)
+library(png)
 library(ggplot2)
+library(ggpubr)
+library(shiny)
+
 # Table more 'centered'
 ui <- pageWithSidebar(
-  headerPanel("Hockey, eh?"),
+  headerPanel("Hockey Tracker"),
   sidebarPanel(
     radioButtons("color", "Pick Color", c("Pink", "Blue")),
     selectInput("shape", "Team", c("Circle", "Triangle"))
