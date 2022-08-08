@@ -1,3 +1,7 @@
+library(ggpubr)
+library(png)
+img<-png::readPNG("blank rink.png")
+
 server <- function(input, output, session){
   
   ## 1. set up reactive dataframe ##
@@ -10,11 +14,13 @@ server <- function(input, output, session){
   ## 2. Create a plot ##
   output$plot1 = renderPlot({
     ggplot(values$DT, aes(x = x, y = y)) +
+      background_image(img) + #This must be on top of the points in the code or the points drawn behind
       geom_point(aes(color = color,
                      shape = shape), size = 5) +
       lims(x = c(0, 100), y = c(0, 100)) +
       theme(legend.position = "bottom") +
       # include so that colors don't change as more color/shape chosen
+      
       scale_color_discrete(drop = FALSE) +
       scale_shape_discrete(drop = FALSE)
   })
