@@ -14,7 +14,7 @@ ui <- fluidPage(
     numericInput("player", "Player Number", 10, min = 0, max = 99),
     
     # Change selectInput to Event
-    selectInput("shape", "Event", c("Circle", "Triangle"))
+    selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal"))
     
   ),
   mainPanel(
@@ -23,12 +23,12 @@ ui <- fluidPage(
                     actionButton("rem_point", "Remove Last Point"),
                     plotOutput(
                       
-                               "plot1", click = "plot_click",
-                               # Set fixed values so plot does not 'stretch'
-                               width = "800px", height = "340px"
-                               
-                               )
+                      "plot1", click = "plot_click",
+                      # Set fixed values so plot does not 'stretch'
+                      width = "800px", height = "340px"
+                      
                     )
+    )
     ),
     fluidRow(column(12,
                     h4("Table of points on plot"),
