@@ -10,22 +10,25 @@ server <- function(input, output, session){
   values <- reactiveValues()
   values$DT <- data.frame(
     
-                          team = factor(),
-                          number = numeric(),
-                          shape = factor(),
-                          x = numeric(),
-                          y = numeric()
-                          
-                          
-                          )
+    team = factor(),
+    number = numeric(),
+    event = factor(),
+    x = numeric(),
+    y = numeric()
+    
+    
+  )
   
   ## 2. Create a plot ##
   output$plot1 = renderPlot({
     ggplot(values$DT, aes(x = x, y = y)) +
       #This must be on top of the points in the code or the points drawn behind    
       background_image(img) + 
-      geom_point(aes(color = team,
-                     shape = shape), size = 5) +
+      geom_point(
+                 aes(color = team,
+                     shape = event), 
+                 
+                 size = 5, ) +
       lims(x = c(0, 200), y = c(-44.5, 44.5)) +
       theme(legend.position = "none") +
       
@@ -40,13 +43,13 @@ server <- function(input, output, session){
     add_row <- 
       data.frame(
         
-                 team = factor(input$team, levels = c("Pink", "Blue")),
-                 number = input$player,
-                 shape = factor(input$shape, levels = c("Circle", "Triangle")),
-                 x = input$plot_click$x,
-                 y = input$plot_click$y
-                 
-                 )
+        team = factor(input$team, levels = c("Pink", "Blue")),
+        number = input$player,
+        event = factor(input$event, levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
+        x = input$plot_click$x, 
+        y = input$plot_click$y
+        
+      )
     # add row to the data.frame
     values$DT <- rbind(values$DT, add_row)
   })
