@@ -1,6 +1,8 @@
 library(ggpubr)
 library(png)
-img<-png::readPNG("blank rink.png")
+
+#Changing image
+img<-png::readPNG("icehockeylayout.png")
 
 server <- function(input, output, session){
   
@@ -14,13 +16,14 @@ server <- function(input, output, session){
   ## 2. Create a plot ##
   output$plot1 = renderPlot({
     ggplot(values$DT, aes(x = x, y = y)) +
-      background_image(img) + #This must be on top of the points in the code or the points drawn behind
+      #This must be on top of the points in the code or the points drawn behind    
+      background_image(img) + 
       geom_point(aes(color = color,
                      shape = shape), size = 5) +
-      lims(x = c(0, 100), y = c(0, 100)) +
-      theme(legend.position = "bottom") +
+      lims(x = c(0, 200), y = c(-44.5, 44.5)) +
+      theme(legend.position = "none") +
+          
       # include so that colors don't change as more color/shape chosen
-      
       scale_color_discrete(drop = FALSE) +
       scale_shape_discrete(drop = FALSE)
   })
@@ -28,7 +31,8 @@ server <- function(input, output, session){
   ## 3. add new row to reactive dataframe upon clicking plot ##
   observeEvent(input$plot_click, {
     # each input is a factor so levels are consistent for plotting characteristics
-    add_row <- data.frame(x = input$plot_click$x,
+    add_row <- 
+        data.frame(x = input$plot_click$x,
                           y = input$plot_click$y,
                           color = factor(input$color, levels = c("Pink", "Blue")),
                           shape = factor(input$shape, levels = c("Circle", "Triangle")))
