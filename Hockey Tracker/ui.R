@@ -8,7 +8,7 @@ ui <- fluidPage(
   headerPanel("Hockey Tracker"),
   sidebarPanel(
     # Change radio button info to Team
-    radioButtons("team", "Team", c("Pink", "Blue")),
+    radioButtons("team", "Team", c("Home", "Away")),
     
     # Add numericInput field for player number
     numericInput("player", "Player Number", 10, min = 0, max = 99),

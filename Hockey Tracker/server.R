@@ -8,32 +8,28 @@ server <- function(input, output, session){
   
   ## 1. set up reactive dataframe ##
   values <- reactiveValues()
-  values$DT <- data.frame(
-    
-    team = factor(),
-    number = numeric(),
-    event = factor(),
-    x = numeric(),
-    y = numeric()
-    
-    
-  )
+  values$DT <- data.frame(team = factor(),
+                          number = numeric(),
+                          event = factor(),
+                          x = numeric(),
+                          y = numeric())
   
   ## 2. Create a plot ##
   output$plot1 = renderPlot({
     ggplot(values$DT, aes(x = x, y = y)) +
       #This must be on top of the points in the code or the points drawn behind    
       background_image(img) + 
-      geom_point(
-                 aes(color = team,
-                     shape = event), 
-                 
-                 size = 5, ) +
+      geom_point(aes(color = team,
+                     shape = event), size = 5) +
       lims(x = c(0, 200), y = c(-44.5, 44.5)) +
       theme(legend.position = "none") +
       
-      # include so that colors don't change as more color/shape chosen
-      scale_color_discrete(drop = FALSE) +
+      # We can only have 1 color scale set
+      scale_color_manual(values = c("Blue", "Green"), 
+                         drop = FALSE) +   
+      # scale_color_discrete(drop = FALSE) +
+          
+      # include so that colors don't change as more color/shape chosen   
       scale_shape_discrete(drop = FALSE)
   })
   
@@ -41,13 +37,12 @@ server <- function(input, output, session){
   observeEvent(input$plot_click, {
     # each input is a factor so levels are consistent for plotting characteristics
     add_row <- 
-      data.frame(
-        
-        team = factor(input$team, levels = c("Pink", "Blue")),
-        number = input$player,
-        event = factor(input$event, levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
-        x = input$plot_click$x, 
-        y = input$plot_click$y
+      data.frame(team = factor(input$team, levels = c("Home", "Away")),
+                 number = input$player,
+                 event = factor(input$event, 
+                                levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
+                 x = input$plot_click$x, 
+                 y = input$plot_click$y
         
       )
     # add row to the data.frame
