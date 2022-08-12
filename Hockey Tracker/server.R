@@ -9,6 +9,8 @@ server <- function(input, output, session){
   ## 1. set up reactive dataframe ##
   values <- reactiveValues()
   values$DT <- data.frame(team = factor(),
+                          period = factor(),
+                          time = hms::hms(),
                           number = numeric(),
                           event = factor(),
                           x = numeric(),
@@ -38,6 +40,8 @@ server <- function(input, output, session){
     # each input is a factor so levels are consistent for plotting characteristics
     add_row <- 
       data.frame(team = factor(input$team, levels = c("Home", "Away")),
+                 period = input$period,
+                 time = strftime(input$time_input, "%M:%S"),
                  number = input$player,
                  event = factor(input$event, 
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.

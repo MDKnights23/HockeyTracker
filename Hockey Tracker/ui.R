@@ -1,7 +1,7 @@
 library(png)
 library(ggplot2)
 library(ggpubr)
-library(shiny)
+library(shinyTime)
 
 # Table more 'centered'
 ui <- fluidPage(
@@ -9,6 +9,12 @@ ui <- fluidPage(
   sidebarPanel(
     # Change radio button info to Team
     radioButtons("team", "Team", c("Home", "Away")),
+    
+    # Add period radio buttons
+    radioButtons("period", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+    
+    # Time Input
+    timeInput("time_input", "Time", value = strptime("00:00", "%M:%S")),
     
     # Add numericInput field for player number
     numericInput("player", "Player Number", 10, min = 0, max = 99),
