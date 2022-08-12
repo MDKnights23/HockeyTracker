@@ -8,9 +8,9 @@ server <- function(input, output, session){
   
   ## 1. set up reactive dataframe ##
   values <- reactiveValues()
-  values$DT <- data.frame(team = factor(),
-                          period = factor(),
+  values$DT <- data.frame(period = factor(),
                           time = hms::hms(),
+                          team = factor(),
                           number = numeric(),
                           event = factor(),
                           x = numeric(),
@@ -24,8 +24,27 @@ server <- function(input, output, session){
       geom_point(aes(color = team,
                      shape = event), size = 5) +
       lims(x = c(0, 200), y = c(-44.5, 44.5)) +
-      theme(legend.position = "none") +
+          
+      # If we want to remove x and y labels from plot    
+      labs(x = "",
+           y = "") +
+          
+      theme(legend.position = "none", 
+            # Option 1: Remove grey background, 
+            # add more subtle grid lines (if desired)
+            panel.background = element_rect(fill = "white"),
+            panel.grid = element_line(color = "grey",
+                                      linetype = 2)) +
+          
+            # Option 2: remove lines and color from background
+            #panel.grid = element_blank(),
+            #panel.background = element_blank(),
+            #plot.margin = margin(t=5)) +
       
+      # Option 3 Remove everything from plot but image
+      # theme_void() +
+      # theme(plot.margin = margin(5, 0, 0, 0))
+          
       # We can only have 1 color scale set
       scale_color_manual(values = c("Blue", "Green"), 
                          drop = FALSE) +   
@@ -39,9 +58,9 @@ server <- function(input, output, session){
   observeEvent(input$plot_click, {
     # each input is a factor so levels are consistent for plotting characteristics
     add_row <- 
-      data.frame(team = factor(input$team, levels = c("Home", "Away")),
-                 period = input$period,
+      data.frame(period = input$period,
                  time = strftime(input$time_input, "%M:%S"),
+                 team = factor(input$team, levels = c("Home", "Away")),
                  number = input$player,
                  event = factor(input$event, 
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
@@ -74,3 +93,4 @@ server <- function(input, output, session){
     }
   )
 }
+
