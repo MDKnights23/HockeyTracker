@@ -1,5 +1,9 @@
 library(ggpubr)
 library(png)
+library(shiny)
+library(lubridate)
+library(ggplot2)
+library(shinyTime)
 
 #Changing image
 img<-png::readPNG("icehockeylayout.png")
@@ -23,33 +27,33 @@ server <- function(input, output, session){
       background_image(img) + 
       geom_point(aes(color = team,
                      shape = event), size = 5) +
-      lims(x = c(0, 200), y = c(-44.5, 44.5)) +
-          
+      lims(x = c(0, 200), y = c(-42.5, 42.5)) +
+      
       # If we want to remove x and y labels from plot    
       labs(x = "",
            y = "") +
-          
+      
       theme(legend.position = "none", 
             # Option 1: Remove grey background, 
             # add more subtle grid lines (if desired)
             panel.background = element_rect(fill = "white"),
             panel.grid = element_line(color = "grey",
                                       linetype = 2)) +
-          
-            # Option 2: remove lines and color from background
-            #panel.grid = element_blank(),
-            #panel.background = element_blank(),
-            #plot.margin = margin(t=5)) +
+      
+      # Option 2: remove lines and color from background
+      #panel.grid = element_blank(),
+      #panel.background = element_blank(),
+      #plot.margin = margin(t=5)) +
       
       # Option 3 Remove everything from plot but image
       # theme_void() +
       # theme(plot.margin = margin(5, 0, 0, 0))
-          
+      
       # We can only have 1 color scale set
-      scale_color_manual(values = c("Blue", "Green"), 
-                         drop = FALSE) +   
+    scale_color_manual(values = c("Blue", "Green"), 
+                       drop = FALSE) +   
       # scale_color_discrete(drop = FALSE) +
-          
+      
       # include so that colors don't change as more color/shape chosen   
       scale_shape_discrete(drop = FALSE)
   })
@@ -66,7 +70,7 @@ server <- function(input, output, session){
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
                  x = input$plot_click$x, 
                  y = input$plot_click$y
-        
+                 
       )
     # add row to the data.frame
     values$DT <- rbind(values$DT, add_row)
@@ -90,7 +94,46 @@ server <- function(input, output, session){
     filename = paste0(Sys.Date(), ".csv"),
     content = function(file) {
       readr::write_csv(values$DT, file)
-    }
+      }
   )
+  
+  ## 7. Timer Stuff
+    # Initialize the timer, 10 seconds, not active.
+    timer <- reactiveVal(0)
+    active <- reactiveVal(FALSE)
+    
+    # Output the time left.
+    output$timeleft <- renderText({
+      paste("Time left: ", seconds_to_period(timer()))
+    })
+    
+    # observer that invalidates every second. If timer is active, decrease by one.
+    observe({
+      invalidateLater(1000, session)
+      isolate({
+        if(active())
+        {
+          timer(timer()-1)
+          if(timer()<1)
+          {
+            active(FALSE)
+            showModal(modalDialog(
+              title = "End of Period message",
+              "Period completed!"
+            ))
+          }
+        }
+     })
+    })
+    
+    # observers for actionbuttons
+    observeEvent(input$start, {active(TRUE)})
+    observeEvent(input$stop, {active(FALSE)})
+    observeEvent(input$reset, 
+                 if(active()){ #I know there's a better way to write this but I'm not looking up syntax right now
+                   
+                 } else {
+                   timer(input$seconds) #basically, you can only set the timer if it's not already running
+                 })
+                 
 }
-
