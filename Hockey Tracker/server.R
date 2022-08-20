@@ -13,7 +13,8 @@ server <- function(input, output, session){
   ## 1. set up reactive dataframe ##
   values <- reactiveValues()
   values$DT <- data.frame(period = factor(),
-                          time = hms::hms(),
+                          time = ms(character()),
+                          #time = character(),
                           team = factor(),
                           number = numeric(),
                           event = factor(),
@@ -63,7 +64,8 @@ server <- function(input, output, session){
     # each input is a factor so levels are consistent for plotting characteristics
     add_row <- 
       data.frame(period = input$period,
-                 time = strftime(input$time_input, "%M:%S"),
+                 time = toString(seconds_to_period(timer())),
+                 # time = as.integer(seconds(timer()),
                  team = factor(input$team, levels = c("Home", "Away")),
                  number = input$player,
                  event = factor(input$event, 
