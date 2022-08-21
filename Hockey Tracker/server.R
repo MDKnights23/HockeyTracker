@@ -15,6 +15,7 @@ server <- function(input, output, session){
   values$DT <- data.frame(period = factor(),
                           time = hms::hms(),
                           team = factor(),
+                          situation = factor(),
                           number = numeric(),
                           event = factor(),
                           x = numeric(),
@@ -65,6 +66,7 @@ server <- function(input, output, session){
       data.frame(period = input$period,
                  time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
                  team = factor(input$team, levels = c("Home", "Away")),
+                 situation = factor(input$situation),
                  number = input$player,
                  event = factor(input$event,
                                 # These are the valid DF entries, which MUST match 

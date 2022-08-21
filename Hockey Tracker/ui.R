@@ -1,3 +1,6 @@
+situation_list <- c("5v5", "5v4", "4v5", "6v5", "5v6", "4v4", "3v3",
+                    "4v3", "3v4", "5v3", "3v5", "6v4", "4v6", "6v3" , "3v6")
+
 # Table more 'centered'
 ui <- fluidPage(
   headerPanel("Hockey Tracker"),
@@ -10,7 +13,6 @@ ui <- fluidPage(
     actionButton('reset','Set Time'),
     actionButton('start','Start'),
     actionButton('stop','Stop'),
-    
     
     
     # Change radio button info to Team
@@ -26,8 +28,10 @@ ui <- fluidPage(
     numericInput("player", "Player Number", 10, min = 0, max = 99),
     
     # Change selectInput to Event
-    selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal"))
+    selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal")),
     
+    # Situation input
+    selectInput("situation", "Situation", situation_list)
     
   ),
   mainPanel(
