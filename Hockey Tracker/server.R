@@ -66,8 +66,11 @@ server <- function(input, output, session){
                  time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
                  team = factor(input$team, levels = c("Home", "Away")),
                  number = input$player,
-                 event = factor(input$event, 
-                                levels = c("Blocked", "Missed", "Saved", "Goal")), #These are the valid DF entries, which MUST match the UI's list of Entries. Unmatched items in the Table go in as NA. Unmatched items in the UI are not drawn.
+                 event = factor(input$event,
+                                # These are the valid DF entries, which MUST match 
+                                # the UI's list of Entries. Unmatched items in the 
+                                # Table go in as NA. Unmatched items in the UI are not drawn.
+                                levels = c("Blocked", "Missed", "Saved", "Goal")), 
                  x = input$plot_click$x, 
                  y = input$plot_click$y
                  
@@ -130,10 +133,12 @@ server <- function(input, output, session){
     observeEvent(input$start, {active(TRUE)})
     observeEvent(input$stop, {active(FALSE)})
     observeEvent(input$reset, 
-                 if(active()){ #I know there's a better way to write this but I'm not looking up syntax right now
+                 if(active()){ # I know there's a better way to write this but I'm 
+                               # not looking up syntax right now
                    
                  } else {
-                   timer(input$seconds) #basically, you can only set the timer if it's not already running
+                   timer(input$seconds) # basically, you can only set the timer if 
+                                        # it's not already running
                  })
                  
 }
