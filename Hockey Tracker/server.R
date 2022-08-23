@@ -73,8 +73,14 @@ server <- function(input, output, session){
                                 # the UI's list of Entries. Unmatched items in the 
                                 # Table go in as NA. Unmatched items in the UI are not drawn.
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
-                 x = input$plot_click$x, 
+                 
+                 x = input$plot_click$x,
                  y = input$plot_click$y
+                 
+                 #MIKE MAKE THIS BLOCK WORK
+                 #IF PERIOD = 2 OR PERIOD = 'OT'
+                 #x = 200-input$plot_click$x, 
+                 #y = -1*input$plot_click$y
                  
       )
     # add row to the data.frame
@@ -99,48 +105,54 @@ server <- function(input, output, session){
     filename = paste0(Sys.Date(), ".csv"),
     content = function(file) {
       readr::write_csv(values$DT, file)
-      }
+    }
   )
   
   ## 7. Timer Stuff
-    # Initialize the timer, 10 seconds, not active.
-    timer <- reactiveVal(0)
-    active <- reactiveVal(FALSE)
-    
-    # Output the time left.
-    output$timeleft <- renderText({
-      paste("Time left: ", seconds_to_period(timer()))
-    })
-    
-    # observer that invalidates every second. If timer is active, decrease by one.
-    observe({
-      invalidateLater(1000, session)
-      isolate({
-        if(active())
+  # Initialize the timer, 10 seconds, not active.
+  timer <- reactiveVal(0)
+  active <- reactiveVal(FALSE)
+  
+  # Output the time left.
+  output$timeleft <- renderText({
+    paste("Time left: ", seconds_to_period(timer()))
+  })
+  
+  # observer that invalidates every second. If timer is active, decrease by one.
+  observe({
+    invalidateLater(1000, session)
+    isolate({
+      if(active())
+      {
+        timer(timer()-1)
+        if(timer()<1)
         {
-          timer(timer()-1)
-          if(timer()<1)
-          {
-            active(FALSE)
-            showModal(modalDialog(
-              title = "End of Period message",
-              "Period completed!"
-            ))
-          }
+          active(FALSE)
+          showModal(modalDialog(
+            title = "End of Period message",
+            "Period completed!"
+          ))
         }
-     })
+      }
     })
-    
-    # observers for actionbuttons
-    observeEvent(input$start, {active(TRUE)})
-    observeEvent(input$stop, {active(FALSE)})
-    observeEvent(input$reset, 
-                 if(active()){ # I know there's a better way to write this but I'm 
-                               # not looking up syntax right now
-                   
-                 } else {
-                   timer(input$seconds) # basically, you can only set the timer if 
-                                        # it's not already running
-                 })
+  })
+  
+  # observers for actionbuttons
+  observeEvent(input$start, 
+               if(timer()>0){
+                 active(TRUE)
+               } else {
+                 #do nothing 
+               }
+               )
+  observeEvent(input$stop, {active(FALSE)})
+  observeEvent(input$reset, 
+               if(active()){ # I know there's a better way to write this but I'm 
+                 # not looking up syntax right now
                  
+               } else {
+                 timer(input$seconds) # basically, you can only set the timer if 
+                 # it's not already running
+               })
+  
 }
