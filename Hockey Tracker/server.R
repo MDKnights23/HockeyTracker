@@ -4,6 +4,7 @@ library(shiny)
 library(lubridate)
 library(ggplot2)
 library(shinyTime)
+library(dplyr)
 
 #Changing image
 img<-png::readPNG("icehockeylayout.png")
@@ -74,13 +75,14 @@ server <- function(input, output, session){
                                 # Table go in as NA. Unmatched items in the UI are not drawn.
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
                  
-                 x = input$plot_click$x,
-                 y = input$plot_click$y
-                 
-                 #MIKE MAKE THIS BLOCK WORK
-                 #IF PERIOD = 2 OR PERIOD = 'OT'
-                 #x = 200-input$plot_click$x, 
-                 #y = -1*input$plot_click$y
+                 x = case_when(
+                        input$period %in% c(1,3) ~ input$plot_click$x,
+                        TRUE ~ 200-input$plot_click$x
+                    ),
+                 y = case_when(
+                        input$period %in% c(1,3) ~ input$plot_click$y,
+                        TRUE ~ -1*input$plot_click$y
+                    )
                  
       )
     # add row to the data.frame
