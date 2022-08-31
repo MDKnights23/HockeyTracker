@@ -120,6 +120,10 @@ server <- function(input, output, session){
     paste("Time left: ", seconds_to_period(timer()))
   })
   
+  output$timeleft2 <- renderText({
+    paste("Time left: ", seconds_to_period(timer()))
+  })
+  
   # observer that invalidates every second. If timer is active, decrease by one.
   observe({
     invalidateLater(1000, session)
@@ -153,7 +157,7 @@ server <- function(input, output, session){
                  # not looking up syntax right now
                  
                } else {
-                 timer(input$seconds) # basically, you can only set the timer if 
+                 timer(60*input$minutes + input$seconds) # basically, you can only set the timer if 
                  # it's not already running
                })
   #8. Goals page dataframe
