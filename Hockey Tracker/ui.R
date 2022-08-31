@@ -56,49 +56,49 @@ ui <- navbarPage("Hockey Tracker",
                   tabPanel(
                     "Goals",
                     #Genos and Apples
-                    flowLayout(
+                    fixedRow(
                     #Team Info
-                    radioButtons("team", "Team", c("Home", "Away")),
+                    column(2, radioButtons("team", "Team", c("Home", "Away"))),
                     #numericInput field for player number
-                    numericInput("playerG", "Goal Scorer", 1, min = 0, max = 99),
+                    column(2, numericInput("playerG", "Goal Scorer", 1, min = 0, max = 99, width = '70%')),
                     #numericInput field for player number
-                    numericInput("playerA1", "Primary Assist", 2, min = 0, max = 99),
+                    column(2, numericInput("playerA1", "Primary Assist", 2, min = 0, max = 99)),
                     #numericInput field for player number
-                    numericInput("playerA2", "Secondary Assist", 3, min = 0, max = 99),
-                    ), # Closes flowLayout
+                    column(2, numericInput("playerA2", "Secondary Assist", 3, min = 0, max = 99)),
+                    ), # Closes fixedRow
                     
                     #Plus/Minus
                     #Plus
-                    flowLayout(
+                    fixedRow(
                     #numericInput field for player number
-                    numericInput("Plus1", "Plus", 1, min = 0, max = 99),
+                    column(2, numericInput("Plus1", "Plus", 1, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Plus2", "Plus", 2, min = 0, max = 99),
+                    column(2, numericInput("Plus2", "Plus", 2, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Plus3", "Plus", 3, min = 0, max = 99),
+                    column(2, numericInput("Plus3", "Plus", 3, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Plus4", "Plus", 4, min = 0, max = 99),
+                    column(2, numericInput("Plus4", "Plus", 4, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Plus5", "Plus", 5, min = 0, max = 99),
+                    column(2, numericInput("Plus5", "Plus", 5, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Plus5", "Plus", 6, min = 0, max = 99),
-                    ), # Closes flowLayout 2
+                    column(2, numericInput("Plus5", "Plus", 6, min = 0, max = 99, width = '45%')),
+                    ), # Closes fixedRow 2
                     
                     #Minus
-                    flowLayout(
+                    fixedRow(
                     #numericInput field for player number
-                    numericInput("Minus1", "Minus", 1, min = 0, max = 99),
+                    column(2, numericInput("Minus1", "Minus", 1, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Minus2", "Minus", 2, min = 0, max = 99),
+                    column(2, numericInput("Minus2", "Minus", 2, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Minus3", "Minus", 3, min = 0, max = 99),
+                    column(2, numericInput("Minus3", "Minus", 3, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Minus4", "Minus", 4, min = 0, max = 99),
+                    column(2, numericInput("Minus4", "Minus", 4, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Minus5", "Minus", 5, min = 0, max = 99),
+                    column(2, numericInput("Minus5", "Minus", 5, min = 0, max = 99, width = '45%')),
                     #numericInput field for player number
-                    numericInput("Minus5", "Minus", 6, min = 0, max = 99),
-                    ), # Closes flowLayout 3
+                    column(2, numericInput("Minus5", "Minus", 6, min = 0, max = 99, width = '45%')),
+                    ), # Closes fixedRow 3
                     
                     actionButton("submit", "The Submit Button")
                   
