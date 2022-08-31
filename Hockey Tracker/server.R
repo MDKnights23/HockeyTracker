@@ -11,7 +11,7 @@ img<-png::readPNG("icehockeylayout.png")
 
 server <- function(input, output, session){
   
-  ## 1. set up reactive dataframe ##
+  ## 1. set up reactive dataframe for Shots##
   values <- reactiveValues()
   values$DT <- data.frame(period = factor(),
                           time = hms::hms(),
@@ -76,13 +76,13 @@ server <- function(input, output, session){
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
                  
                  x = case_when(
-                        input$period %in% c(1,3) ~ input$plot_click$x,
-                        TRUE ~ 200-input$plot_click$x
-                    ),
+                   input$period %in% c(1,3) ~ input$plot_click$x,
+                   TRUE ~ 200-input$plot_click$x
+                 ),
                  y = case_when(
-                        input$period %in% c(1,3) ~ input$plot_click$y,
-                        TRUE ~ -1*input$plot_click$y
-                    )
+                   input$period %in% c(1,3) ~ input$plot_click$y,
+                   TRUE ~ -1*input$plot_click$y
+                 )
                  
       )
     # add row to the data.frame
@@ -146,7 +146,7 @@ server <- function(input, output, session){
                } else {
                  #do nothing 
                }
-               )
+  )
   observeEvent(input$stop, {active(FALSE)})
   observeEvent(input$reset, 
                if(active()){ # I know there's a better way to write this but I'm 
@@ -156,5 +156,45 @@ server <- function(input, output, session){
                  timer(input$seconds) # basically, you can only set the timer if 
                  # it's not already running
                })
+  #8. Goals page dataframe
+  #goalValues <- reactiveValues()
+  #goalValues$DT <- data.frame(goalScorer = numeric(),
+  #                            primaryAssist = numeric(),
+  #                            secondaryAssist = numeric(),
+  #                            plus1 = numeric(),
+  #                            plus2 = numeric(),
+  #                            plus3 = numeric(),
+  #                            plus4 = numeric(),
+  #                            plus5 = numeric(),
+  #                            plus6 = numeric(),
+  #                            minus1 = numeric(),
+  #                            minus2 = numeric(),
+  #                            minus3 = numeric(),
+  #                            minus4 = numeric(),
+  #                            minus5 = numeric(),
+  #                            minus6 = numeric())
+  #9 Goals page add to dataframe
+  #observeEvent(input$submit, {
+  #  add_row2 <- 
+  #    data.frame(                 
+  #               goalScorer = input$playerG,
+  #               primaryAssist = input$playerA1,
+  #               secondaryAssist = input$playerA2,
+  #               plus1 = input$Plus1,
+  #               plus2 = input$Plus2,
+  #               plus3 = input$Plus3,
+  #               plus4 = input$Plus4,
+  #               plus5 = input$Plus5,
+  #               plus6 = input$Plus6,
+  #               minus1 = input$Minus1,
+  #               minus2 = input$Minus2,
+  #               minus3 = input$Minus3,
+  #               minus4 = input$Minus4,
+  #               minus5 = input$Minus5,
+  #               minus6 = input$Minus6
+  #               )
+  #  # add row to the data.frame
+  #  values$DT <- rbind(goalValues$DT, add_row2)
+  #})
   
 }
