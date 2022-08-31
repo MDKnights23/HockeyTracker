@@ -4,107 +4,140 @@ situation_list <- c("5v5", "5v4", "4v5", "6v5", "5v6", "4v4", "3v3",
 ui <- navbarPage("Hockey Tracker",
                  tabPanel(
                    "Shot Attempts",
-                      sidebarPanel(
-                        #Timer
-                        textOutput('timeleft'),
-                        # Set Timer
-                        numericInput('seconds','Seconds:',value=1200,min=0,max=99999,step=1),
-                        actionButton('reset','Set Time'),
-                        actionButton('start','Start'),
-                        actionButton('stop','Stop'),
-    
-                        #Team Info
-                        radioButtons("team", "Team", c("Home", "Away")),
-    
-                        # Add period radio buttons
-                        radioButtons("period", "Period", c(1, 2, 3, "OT"), inline = TRUE),
-    
-                        # Time Input
-                        #timeInput("time_input", "Time", value = strptime("00:00", "%M:%S")),
-    
-                        #numericInput field for player number
-                        numericInput("player", "Player Number", 10, min = 0, max = 99),
-        
-                        # Change selectInput to Event
-                        selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal")),
-    
-                        # Situation input
-                        selectInput("situation", "Situation", situation_list)
-                        ), #This parenthesis closes the sidebarPanel
-                  
-                        mainPanel(
-                          fluidRow(column(12,
-                            h4("Click to place event location"),
-                            actionButton("rem_point", "Remove Last Point"),
-                            plotOutput(
-                                  "plot1", click = "plot_click",
-                                  # Set fixed values so plot does not 'stretch'
-                                  width = "800px", height = "340px"
-                                  )#This parenthesis closes the first column.
-                                    )
-                                  ),#This parenthesis closes the first fluidRow.
-                          fluidRow(column(12,
-                            h4("Table of points on plot"),
-                            downloadLink("download"),
-                            tableOutput("table")
-                                  )#This parenthesis closes the first column of the second Row.
-                                      #This might do weird things since I've changed it from a 
-                                      #fluidpage to a navbar page. Remains to be seen.
-                                  )#This parenthesis closes the second fluidRow.
-                                )#Closes first tab's main panel
-                        ),#Closes tabPanel 1
-                  tabPanel(
-                    "Goals",
-                    #Genos and Apples
-                    fixedRow(
-                    #Team Info
-                    column(2, radioButtons("team", "Team", c("Home", "Away"))),
-                    #numericInput field for player number
-                    column(2, numericInput("playerG", "Goal Scorer", 1, min = 0, max = 99, width = '70%')),
-                    #numericInput field for player number
-                    column(2, numericInput("playerA1", "Primary Assist", 2, min = 0, max = 99)),
-                    #numericInput field for player number
-                    column(2, numericInput("playerA2", "Secondary Assist", 3, min = 0, max = 99)),
-                    ), # Closes fixedRow
-                    
-                    #Plus/Minus
-                    #Plus
-                    fixedRow(
-                    #numericInput field for player number
-                    column(2, numericInput("Plus1", "Plus", 1, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Plus2", "Plus", 2, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Plus3", "Plus", 3, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Plus4", "Plus", 4, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Plus5", "Plus", 5, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Plus5", "Plus", 6, min = 0, max = 99, width = '45%')),
-                    ), # Closes fixedRow 2
-                    
-                    #Minus
-                    fixedRow(
-                    #numericInput field for player number
-                    column(2, numericInput("Minus1", "Minus", 1, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Minus2", "Minus", 2, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Minus3", "Minus", 3, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Minus4", "Minus", 4, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Minus5", "Minus", 5, min = 0, max = 99, width = '45%')),
-                    #numericInput field for player number
-                    column(2, numericInput("Minus5", "Minus", 6, min = 0, max = 99, width = '45%')),
-                    ), # Closes fixedRow 3
-                    
-                    actionButton("submit", "The Submit Button")
-                  
-                  ),#Closes tabPanel 2
-                  tabPanel(
-                    "Penalties",
-                    "Poop"
-                  )#Closes tabPanel 3
-            )#Closes UI
+                   sidebarPanel(
+                     #Timer
+                     textOutput('timeleft'),
+                     # Set Timer
+                     fluidRow(
+                       column(6, numericInput('minutes', 'Minutes:', value = 20, min=0, max=99), style='padding:0%; text-align: right'),
+                       column(6, numericInput('seconds','Seconds',value=0,min=0,max=59), style='padding:0%; text-align: left')
+                     ),
+           
+                    actionButton('reset','Set Time'),
+                    actionButton('start','Start'),
+                    actionButton('stop','Stop'),
+           
+                     
+                     
+                     
+                     #Team Info
+                     radioButtons("team", "Team", c("Home", "Away")),
+                     
+                     # Add period radio buttons
+                     radioButtons("period", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+                     
+                     # Time Input
+                     #timeInput("time_input", "Time", value = strptime("00:00", "%M:%S")),
+                     
+                     #numericInput field for player number
+                     numericInput("player", "Player Number", 10, min = 0, max = 99),
+                     
+                     # Change selectInput to Event
+                     selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal")),
+                     
+                     # Situation input
+                     selectInput("situation", "Situation", situation_list)
+                   ), #This parenthesis closes the sidebarPanel
+                   
+                   mainPanel(
+                     fluidRow(column(12,
+                                     h4("Click to place event location"),
+                                     actionButton("rem_point", "Remove Last Point"),
+                                     plotOutput(
+                                       "plot1", click = "plot_click",
+                                       # Set fixed values so plot does not 'stretch'
+                                       width = "800px", height = "340px"
+                                     )#This parenthesis closes the first column.
+                     )
+                     ),#This parenthesis closes the first fluidRow.
+                     fluidRow(column(12,
+                                     h4("Table of points on plot"),
+                                     downloadLink("download"),
+                                     tableOutput("table")
+                     )#This parenthesis closes the first column of the second Row.
+                     #This might do weird things since I've changed it from a 
+                     #fluidpage to a navbar page. Remains to be seen.
+                     )#This parenthesis closes the second fluidRow.
+                   )#Closes first tab's main panel
+                 ),#Closes tabPanel 1
+                 tabPanel(
+                   
+                   "Goals",
+                   #Genos and Apples
+                   fixedRow(
+                     tags$head( ##This is some shit I copied from the internet to get rid of the up/down arrows. Trust it.
+                       tags$style(HTML("
+                          input[type=number] {
+                            -moz-appearance:textfield;
+                          }
+                          input[type=number]::{
+                            -moz-appearance:textfield;
+                          }
+                          input[type=number]::-webkit-outer-spin-button,
+                          input[type=number]::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                          }
+                      "))#Close style and html 
+                     ),
+                     sidebarPanel(
+                       #Team Info
+                       radioButtons("team", "Team", c("Home", "Away")),
+                       textOutput("timeleft2")
+                     ),
+                     mainPanel(
+                       fixedRow(
+                            #numericInput field for player number
+                            column(2, numericInput("playerG", "Goal Scorer", NA, min = 0, max = 99, width = '80%')),
+                            #numericInput field for player number
+                            column(2, numericInput("playerA1", "Primary Assist", NA, min = 0, max = 99,width = '80%')),
+                            #numericInput field for player number
+                            column(2, numericInput("playerA2", "Secondary Assist", NA, min = 0, max = 99,width = '80%')),
+                        ), # Closes fixedRow
+                     
+                     #Plus/Minus
+                     #Plus
+                       fixedRow(
+                           #numericInput field for player number
+                            column(2, numericInput("Plus1", "Plus", NA, min = 0, max = 99, width = '60%')),
+                            #numericInput field for player number
+                            column(2, numericInput("Plus2", "Plus" , NA, min = 0, max = 99, width = '60%')),
+                            #numericInput field for player number
+                            column(2, numericInput("Plus3", "Plus", NA, min = 0, max = 99, width = '60%')),
+                            #numericInput field for player number
+                            column(2, numericInput("Plus4", "Plus", NA, min = 0, max = 99, width = '60%')),
+                            #numericInput field for player number
+                            column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
+                            #numericInput field for player number
+                            column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
+                       ), # Closes fixedRow 2
+                     
+                     #Minus
+                     fixedRow(
+                       #numericInput field for player number
+                       column(2, numericInput("Minus1", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       #numericInput field for player number
+                       column(2, numericInput("Minus2", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       #numericInput field for player number
+                       column(2, numericInput("Minus3", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       #numericInput field for player number
+                       column(2, numericInput("Minus4", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       #numericInput field for player number
+                       column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       #numericInput field for player number
+                       column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
+                     ), # Closes fixedRow 3
+                     
+                     actionButton("submit", "Submit")
+                     ))
+                      
+                      
+                     
+                   
+                 ),#Closes tabPanel 2
+                 tabPanel(
+                   "Penalties",
+                   "Poop"
+                 )#Closes tabPanel 3
+                 
+)#Closes UI
