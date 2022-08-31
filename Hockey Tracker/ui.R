@@ -56,7 +56,7 @@ ui <- navbarPage("Hockey Tracker",
                   tabPanel(
                     "Goals",
                     #Genos and Apples
-                    
+                    flowLayout(
                     #Team Info
                     radioButtons("team", "Team", c("Home", "Away")),
                     #numericInput field for player number
@@ -65,9 +65,11 @@ ui <- navbarPage("Hockey Tracker",
                     numericInput("playerA1", "Primary Assist", 2, min = 0, max = 99),
                     #numericInput field for player number
                     numericInput("playerA2", "Secondary Assist", 3, min = 0, max = 99),
+                    ), # Closes flowLayout
                     
                     #Plus/Minus
                     #Plus
+                    flowLayout(
                     #numericInput field for player number
                     numericInput("Plus1", "Plus", 1, min = 0, max = 99),
                     #numericInput field for player number
@@ -80,8 +82,10 @@ ui <- navbarPage("Hockey Tracker",
                     numericInput("Plus5", "Plus", 5, min = 0, max = 99),
                     #numericInput field for player number
                     numericInput("Plus5", "Plus", 6, min = 0, max = 99),
+                    ), # Closes flowLayout 2
                     
                     #Minus
+                    flowLayout(
                     #numericInput field for player number
                     numericInput("Minus1", "Minus", 1, min = 0, max = 99),
                     #numericInput field for player number
@@ -94,8 +98,10 @@ ui <- navbarPage("Hockey Tracker",
                     numericInput("Minus5", "Minus", 5, min = 0, max = 99),
                     #numericInput field for player number
                     numericInput("Minus5", "Minus", 6, min = 0, max = 99),
+                    ), # Closes flowLayout 3
                     
                     actionButton("submit", "The Submit Button")
+                  
                   ),#Closes tabPanel 2
                   tabPanel(
                     "Penalties",
