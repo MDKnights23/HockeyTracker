@@ -1,5 +1,33 @@
 situation_list <- c("5v5", "5v4", "4v5", "6v5", "5v6", "4v4", "3v3",
                     "4v3", "3v4", "5v3", "3v5", "6v4", "4v6", "6v3" , "3v6")
+
+penalty_list <- c("Boarding",
+                  "Charging",
+                  "Checking from Behind",
+                  "Closing Hand on Puck",
+                  "Cross-checking",
+                  "Delay of game",
+                  "Elbowing",
+                  "Embellishment",
+                  "Face-off violation",
+                  "Fighting",
+                  "Goaltender interference",
+                  "High-sticking",
+                  "Holding",
+                  "Holding the stick",
+                  "Hooking",
+                  "Instigator",
+                  "Interference",
+                  "Kneeing",
+                  "Roughing",
+                  "Slashing",
+                  "Spearing",
+                  "Too Many Players",
+                  "Tripping",
+                  "Unsportsmanlike Conduct",
+                  "Other"
+)
+
 # Table more 'centered'
 ui <- navbarPage("Hockey Tracker",
                  tabPanel(
@@ -12,13 +40,10 @@ ui <- navbarPage("Hockey Tracker",
                        column(6, numericInput('minutes', 'Minutes:', value = 20, min=0, max=99), style='padding:0%; text-align: right'),
                        column(6, numericInput('seconds','Seconds',value=0,min=0,max=59), style='padding:0%; text-align: left')
                      ),
-           
-                    actionButton('reset','Set Time'),
-                    actionButton('start','Start'),
-                    actionButton('stop','Stop'),
-           
                      
-                     
+                     actionButton('reset','Set Time'),
+                     actionButton('start','Start'),
+                     actionButton('stop','Stop'),
                      
                      #Team Info
                      radioButtons("team", "Team", c("Home", "Away")),
@@ -60,8 +85,12 @@ ui <- navbarPage("Hockey Tracker",
                      )#This parenthesis closes the second fluidRow.
                    )#Closes first tab's main panel
                  ),#Closes tabPanel 1
+                 
+                 
+                 
+                 
+                 
                  tabPanel(
-                   
                    "Goals",
                    #Genos and Apples
                    fixedRow(
@@ -81,63 +110,82 @@ ui <- navbarPage("Hockey Tracker",
                       "))#Close style and html 
                      ),
                      sidebarPanel(
+                       #copy of time from page 1
+                       textOutput("timeleft2"),
                        #Team Info
                        radioButtons("team", "Team", c("Home", "Away")),
-                       textOutput("timeleft2")
+                       
                      ),
                      mainPanel(
                        fixedRow(
-                            #numericInput field for player number
-                            column(2, numericInput("playerG", "Goal Scorer", NA, min = 0, max = 99, width = '80%')),
-                            #numericInput field for player number
-                            column(2, numericInput("playerA1", "Primary Assist", NA, min = 0, max = 99,width = '80%')),
-                            #numericInput field for player number
-                            column(2, numericInput("playerA2", "Secondary Assist", NA, min = 0, max = 99,width = '80%')),
-                        ), # Closes fixedRow
-                     
-                     #Plus/Minus
-                     #Plus
+                         #numericInput field for player number
+                         column(2, numericInput("playerG", "Goal Scorer", NA, min = 0, max = 99, width = '80%')),
+                         #numericInput field for player number
+                         column(2, numericInput("playerA1", "Primary Assist", NA, min = 0, max = 99,width = '80%')),
+                         #numericInput field for player number
+                         column(2, numericInput("playerA2", "Secondary Assist", NA, min = 0, max = 99,width = '80%')),
+                       ), # Closes fixedRow
+                       
+                       #Plus/Minus
+                       #Plus
                        fixedRow(
-                           #numericInput field for player number
-                            column(2, numericInput("Plus1", "Plus", NA, min = 0, max = 99, width = '60%')),
-                            #numericInput field for player number
-                            column(2, numericInput("Plus2", "Plus" , NA, min = 0, max = 99, width = '60%')),
-                            #numericInput field for player number
-                            column(2, numericInput("Plus3", "Plus", NA, min = 0, max = 99, width = '60%')),
-                            #numericInput field for player number
-                            column(2, numericInput("Plus4", "Plus", NA, min = 0, max = 99, width = '60%')),
-                            #numericInput field for player number
-                            column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
-                            #numericInput field for player number
-                            column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus1", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus2", "Plus" , NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus3", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus4", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
                        ), # Closes fixedRow 2
-                     
-                     #Minus
-                     fixedRow(
-                       #numericInput field for player number
-                       column(2, numericInput("Minus1", "Minus", NA, min = 0, max = 99, width = '60%')),
-                       #numericInput field for player number
-                       column(2, numericInput("Minus2", "Minus", NA, min = 0, max = 99, width = '60%')),
-                       #numericInput field for player number
-                       column(2, numericInput("Minus3", "Minus", NA, min = 0, max = 99, width = '60%')),
-                       #numericInput field for player number
-                       column(2, numericInput("Minus4", "Minus", NA, min = 0, max = 99, width = '60%')),
-                       #numericInput field for player number
-                       column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
-                       #numericInput field for player number
-                       column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
-                     ), # Closes fixedRow 3
-                     
-                     actionButton("submit", "Submit")
+                       
+                       #Minus
+                       fixedRow(
+                         #numericInput field for player number
+                         column(2, numericInput("Minus1", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Minus2", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Minus3", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Minus4", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         #numericInput field for player number
+                         column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
+                       ), # Closes fixedRow 3
+                       
+                       actionButton("submit", "Submit")
                      ))
-                      
-                      
-                     
-                   
                  ),#Closes tabPanel 2
+
                  tabPanel(
                    "Penalties",
-                   "Poop"
+                   sidebarPanel(
+                     #copy of time from page 1
+                     textOutput("timeleft3"),
+                     #Team Info
+                     radioButtons("team", "Team", c("Home", "Away")),
+                     # Add period radio buttons
+                     radioButtons("period", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+                     
+                     #numericInput field for player number
+                     numericInput("player", "Player Number", 10, min = 0, max = 99),
+                     
+                     # Change selectInput to Event
+                     selectInput("event", "Event", penalty_list),
+                     
+                     # Additional Penalty Details
+                     textInput("additional_details","Additional Details", value="")
+                     
+                   ),
+                   mainPanel(
+                     
+                   ),
+                   
                  )#Closes tabPanel 3
-                 
 )#Closes UI
