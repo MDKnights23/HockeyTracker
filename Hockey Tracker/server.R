@@ -119,8 +119,11 @@ server <- function(input, output, session){
   output$timeleft <- renderText({
     paste("Time left: ", seconds_to_period(timer()))
   })
-  
   output$timeleft2 <- renderText({
+    paste("Time left: ", seconds_to_period(timer()))
+  })
+  
+  output$timeleft3 <- renderText({
     paste("Time left: ", seconds_to_period(timer()))
   })
   
@@ -158,6 +161,8 @@ server <- function(input, output, session){
                  
                } else {
                  timer(60*input$minutes + input$seconds) # basically, you can only set the timer if 
+                 # it's not already running
+                 # basically, you can only set the timer if 
                  # it's not already running
                })
   #8. Goals page dataframe
