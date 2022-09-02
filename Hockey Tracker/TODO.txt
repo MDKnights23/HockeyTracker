@@ -1,0 +1,13 @@
+Get table to appear under tab 2
+Create table for tab 3
+Get table to appear in tab 3
+Accept the promotion, idiot.
+
+Create 4th "Summary" tab
+	This will have all 3 data tabs' information displayed in order and print nicely
+	If we have room we could create a roster-level summary, which would sum-total the county bits from the other tables.
+		If we do not have room, we still want this, but put it in a fifth tab.
+		A LOT might change here, depending on how we want to do rosters. 
+			We could make that the first tab, and instead of numeric inputs, make it a selection list based on the players said team actually has
+				So you couldn't like...Give #11 a goal if the team doesn't have a #11.
+			Someone's probably going to give a shit about player names, but I do not, currently.
