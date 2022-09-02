@@ -7,7 +7,7 @@ library(shinyTime)
 library(dplyr)
 
 #Changing image
-img<-png::readPNG("icehockeylayout.png")
+img<-png::readPNG("icehockeylayout2.png")
 
 server <- function(input, output, session){
   
@@ -29,7 +29,7 @@ server <- function(input, output, session){
       background_image(img) + 
       geom_point(aes(color = team,
                      shape = event), size = 5) +
-      lims(x = c(0, 200), y = c(-42.5, 42.5)) +
+      lims(x = c(0,200), y = c(-42.5, 42.5)) +
       
       # If we want to remove x and y labels from plot    
       labs(x = "",
@@ -166,44 +166,44 @@ server <- function(input, output, session){
                  # it's not already running
                })
   #8. Goals page dataframe
-  #goalValues <- reactiveValues()
-  #goalValues$DT <- data.frame(goalScorer = numeric(),
-  #                            primaryAssist = numeric(),
-  #                            secondaryAssist = numeric(),
-  #                            plus1 = numeric(),
-  #                            plus2 = numeric(),
-  #                            plus3 = numeric(),
-  #                            plus4 = numeric(),
-  #                            plus5 = numeric(),
-  #                            plus6 = numeric(),
-  #                            minus1 = numeric(),
-  #                            minus2 = numeric(),
-  #                            minus3 = numeric(),
-  #                            minus4 = numeric(),
-  #                            minus5 = numeric(),
-  #                            minus6 = numeric())
+  goalValues <- reactiveValues()
+  goalValues$DT <- data.frame(goalScorer = numeric(),
+                              primaryAssist = numeric(),
+                              secondaryAssist = numeric(),
+                              plus1 = numeric(),
+                              plus2 = numeric(),
+                              plus3 = numeric(),
+                              plus4 = numeric(),
+                              plus5 = numeric(),
+                              plus6 = numeric(),
+                              minus1 = numeric(),
+                              minus2 = numeric(),
+                              minus3 = numeric(),
+                              minus4 = numeric(),
+                              minus5 = numeric(),
+                              minus6 = numeric())
   #9 Goals page add to dataframe
-  #observeEvent(input$submit, {
-  #  add_row2 <- 
-  #    data.frame(                 
-  #               goalScorer = input$playerG,
-  #               primaryAssist = input$playerA1,
-  #               secondaryAssist = input$playerA2,
-  #               plus1 = input$Plus1,
-  #               plus2 = input$Plus2,
-  #               plus3 = input$Plus3,
-  #               plus4 = input$Plus4,
-  #               plus5 = input$Plus5,
-  #               plus6 = input$Plus6,
-  #               minus1 = input$Minus1,
-  #               minus2 = input$Minus2,
-  #               minus3 = input$Minus3,
-  #               minus4 = input$Minus4,
-  #               minus5 = input$Minus5,
-  #               minus6 = input$Minus6
-  #               )
-  #  # add row to the data.frame
-  #  values$DT <- rbind(goalValues$DT, add_row2)
-  #})
+  observeEvent(input$submit, {
+    add_row2 <- 
+      data.frame(                 
+                 goalScorer = input$playerG,
+                 primaryAssist = input$playerA1,
+                 secondaryAssist = input$playerA2,
+                 plus1 = input$Plus1,
+                 plus2 = input$Plus2,
+                 plus3 = input$Plus3,
+                 plus4 = input$Plus4,
+                 plus5 = input$Plus5,
+                 plus6 = input$Plus6,
+                 minus1 = input$Minus1,
+                 minus2 = input$Minus2,
+                 minus3 = input$Minus3,
+                 minus4 = input$Minus4,
+                 minus5 = input$Minus5,
+                 minus6 = input$Minus6
+                 )
+    # add row to the data.frame
+    goalValues$DT <- rbind(goalValues$DT, add_row2)
+  })
   
 }
