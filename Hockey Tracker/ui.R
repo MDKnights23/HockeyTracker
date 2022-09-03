@@ -140,7 +140,7 @@ ui <- navbarPage("Hockey Tracker",
                          #numericInput field for player number
                          column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
                          #numericInput field for player number
-                         column(2, numericInput("Plus5", "Plus", NA, min = 0, max = 99, width = '60%')),
+                         column(2, numericInput("Plus6", "Plus", NA, min = 0, max = 99, width = '60%')),
                        ), # Closes fixedRow 2
                        
                        #Minus
@@ -156,11 +156,19 @@ ui <- navbarPage("Hockey Tracker",
                          #numericInput field for player number
                          column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
                          #numericInput field for player number
-                         column(2, numericInput("Minus5", "Minus", NA, min = 0, max = 99, width = '60%')),
+                         column(2, numericInput("Minus6", "Minus", NA, min = 0, max = 99, width = '60%')),
                        ), # Closes fixedRow 3
                        
                        actionButton("submit", "Submit")
-                     ))
+
+                     )),
+                   
+                   fluidRow(column(12,
+                                   h4("Goals"),
+                                   downloadLink("Download"),
+                                   tableOutput("table2")
+                   ))
+                   
                  ),#Closes tabPanel 2
 
                  tabPanel(

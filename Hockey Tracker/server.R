@@ -165,6 +165,7 @@ server <- function(input, output, session){
                  # basically, you can only set the timer if 
                  # it's not already running
                })
+  
   #8. Goals page dataframe
   goalValues <- reactiveValues()
   goalValues$DT <- data.frame(goalScorer = numeric(),
@@ -182,6 +183,7 @@ server <- function(input, output, session){
                               minus4 = numeric(),
                               minus5 = numeric(),
                               minus6 = numeric())
+  
   #9 Goals page add to dataframe
   observeEvent(input$submit, {
     add_row2 <- 
@@ -205,5 +207,9 @@ server <- function(input, output, session){
     # add row to the data.frame
     goalValues$DT <- rbind(goalValues$DT, add_row2)
   })
+  
+  
+  # Render Goals table
+  output$table2 <- renderTable(goalValues$DT)
   
 }
