@@ -1,7 +1,7 @@
-Get table to appear under tab 2
-Create table for tab 3
-Get table to appear in tab 3
-Accept the promotion, idiot.
+Get table to appear under tab 2 DONE
+Create table for tab 3 DONE
+Get table to appear in tab 3 DONE
+Accept the promotion, idiot. ok
 
 Create 4th "Summary" tab
 	This will have all 3 data tabs' information displayed in order and print nicely

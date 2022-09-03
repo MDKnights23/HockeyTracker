@@ -99,7 +99,7 @@ server <- function(input, output, session){
   output$table <- renderTable(
     values$DT,
     # tail(values$DT, 5),
-    width = "75%"
+    align = 'l'
   )
   
   ## 6. Download dataframe
@@ -185,7 +185,7 @@ server <- function(input, output, session){
                               minus6 = numeric())
   
   #9 Goals page add to dataframe
-  observeEvent(input$submit, {
+  observeEvent(input$submit2, {
     add_row2 <- 
       data.frame(                 
                  goalScorer = input$playerG,
@@ -209,7 +209,34 @@ server <- function(input, output, session){
   })
   
   
-  # Render Goals table
-  output$table2 <- renderTable(goalValues$DT)
+  # 10 Render Goals table
+  output$table2 <- renderTable(goalValues$DT,
+                               align = "l")
+  
+  # 11 Penalties page data frame
+  penaltyValues <- reactiveValues()
+  penaltyValues$DT <- data.frame(Team = factor(),
+                                 Period = numeric(),
+                                 playerNumber = numeric(),
+                                 Penalty = factor(),
+                                 additionalDetails = character())
+  
+  # 12 Goals page add to dataframe
+  observeEvent(input$submit3, {
+      add_row3 <- 
+          data.frame(
+              Team = input$team3,
+              Period = input$period3,
+              playerNumber = input$player3,
+              Penalty = input$event3,
+              additionalDetails = input$additional_details
+          )
+      # add row to the data.frame
+      penaltyValues$DT <- rbind(penaltyValues$DT, add_row3)
+      })
+  
+  # 13 Render Penalties table
+  output$table3 <- renderTable(penaltyValues$DT,
+                               align = "l")
   
 }

@@ -77,7 +77,7 @@ ui <- navbarPage("Hockey Tracker",
                      ),#This parenthesis closes the first fluidRow.
                      fluidRow(column(12,
                                      h4("Table of points on plot"),
-                                     downloadLink("download"),
+                                     downloadLink("download1", "Download"),
                                      tableOutput("table")
                      )#This parenthesis closes the first column of the second Row.
                      #This might do weird things since I've changed it from a 
@@ -113,7 +113,7 @@ ui <- navbarPage("Hockey Tracker",
                        #copy of time from page 1
                        textOutput("timeleft2"),
                        #Team Info
-                       radioButtons("team", "Team", c("Home", "Away")),
+                       radioButtons("team2", "Team", c("Home", "Away")),
                        
                      ),
                      mainPanel(
@@ -159,13 +159,13 @@ ui <- navbarPage("Hockey Tracker",
                          column(2, numericInput("Minus6", "Minus", NA, min = 0, max = 99, width = '60%')),
                        ), # Closes fixedRow 3
                        
-                       actionButton("submit", "Submit")
+                       actionButton("submit2", "Submit")
 
                      )),
                    
                    fluidRow(column(12,
                                    h4("Goals"),
-                                   downloadLink("Download"),
+                                   downloadLink("download2", "Download"),
                                    tableOutput("table2")
                    ))
                    
@@ -177,22 +177,28 @@ ui <- navbarPage("Hockey Tracker",
                      #copy of time from page 1
                      textOutput("timeleft3"),
                      #Team Info
-                     radioButtons("team", "Team", c("Home", "Away")),
+                     radioButtons("team3", "Team", c("Home", "Away")),
                      # Add period radio buttons
-                     radioButtons("period", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+                     radioButtons("period3", "Period", c(1, 2, 3, "OT"), inline = TRUE),
                      
                      #numericInput field for player number
-                     numericInput("player", "Player Number", 10, min = 0, max = 99),
+                     numericInput("player3", "Player Number", 10, min = 0, max = 99),
                      
                      # Change selectInput to Event
-                     selectInput("event", "Event", penalty_list),
+                     selectInput("event3", "Event", penalty_list),
                      
                      # Additional Penalty Details
-                     textInput("additional_details","Additional Details", value="")
+                     textInput("additional_details","Additional Details", value=""),
+                     
+                     actionButton("submit3", "Submit")
                      
                    ),
                    mainPanel(
-                     
+                       fluidRow(column(12,
+                                       h4("Penalties"),
+                                       downloadLink("download3", "Download"),
+                                       tableOutput("table3")
+                       )) 
                    ),
                    
                  )#Closes tabPanel 3
