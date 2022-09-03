@@ -76,7 +76,7 @@ ui <- navbarPage("Hockey Tracker",
                      )
                      ),#This parenthesis closes the first fluidRow.
                      fluidRow(column(12,
-                                     h4("Table of points on plot"),
+                                     h4("Shots"),
                                      downloadLink("download1", "Download"),
                                      tableOutput("table")
                      )#This parenthesis closes the first column of the second Row.
@@ -201,5 +201,30 @@ ui <- navbarPage("Hockey Tracker",
                        )) 
                    ),
                    
-                 )#Closes tabPanel 3
+                 ), # Closes tabPanel 3
+                 
+                tabPanel(
+                    "Summary",
+                    
+                    fluidRow(column(12,
+                                    h4("Shot Chart"),
+                                    plotOutput(
+                                        "shots",
+                                        width = "800px", height = "340px"
+                                    )
+                    )),
+                    
+                    fluidRow(column(12,
+                                    h4("Goals"),
+                                    tableOutput("table4")
+                    )),
+                    
+                    fluidRow(column(12,
+                                    h4("Penalties"),
+                                    tableOutput("table5")
+                    ))
+                )
+                
+                
+                
 )#Closes UI

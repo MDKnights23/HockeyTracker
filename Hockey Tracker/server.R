@@ -239,4 +239,46 @@ server <- function(input, output, session){
   output$table3 <- renderTable(penaltyValues$DT,
                                align = "l")
   
+  # Summary tab
+  output$shots = renderPlot({
+      ggplot(values$DT, aes(x = x, y = y)) +
+          #This must be on top of the points in the code or the points drawn behind    
+          background_image(img) + 
+          geom_point(aes(color = team,
+                         shape = event), size = 5) +
+          lims(x = c(0,200), y = c(-42.5, 42.5)) +
+          
+          # If we want to remove x and y labels from plot    
+          labs(x = "",
+               y = "") +
+          
+          theme(legend.position = "none", 
+                # Option 1: Remove grey background, 
+                # add more subtle grid lines (if desired)
+                panel.background = element_rect(fill = "white"),
+                panel.grid = element_line(color = "grey",
+                                          linetype = 2)) +
+          
+          # Option 2: remove lines and color from background
+          #panel.grid = element_blank(),
+          #panel.background = element_blank(),
+          #plot.margin = margin(t=5)) +
+          
+          # Option 3 Remove everything from plot but image
+          # theme_void() +
+          # theme(plot.margin = margin(5, 0, 0, 0))
+          
+          # We can only have 1 color scale set
+      scale_color_manual(values = c("Blue", "Green"), 
+                         drop = FALSE) +   
+          # scale_color_discrete(drop = FALSE) +
+          
+          # include so that colors don't change as more color/shape chosen   
+          scale_shape_discrete(drop = FALSE)
+  })
+  
+  output$table4 <- renderTable(goalValues$DT)
+  
+  output$table5 <- renderTable(penaltyValues$DT)
+  
 }
