@@ -34,7 +34,7 @@ ui <- navbarPage("Hockey Tracker",
                    "Shot Attempts",
                    sidebarPanel(
                      #Timer
-                     textOutput('timeleft'),
+                     column(12, textOutput('timeleft'), style='padding:0%; text-align: center'),
                      # Set Timer
                      fluidRow(
                        column(6, numericInput('minutes', 'Minutes:', value = 20, min=0, max=99), style='padding:0%; text-align: right'),
