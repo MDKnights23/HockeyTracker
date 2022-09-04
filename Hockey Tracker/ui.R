@@ -160,7 +160,7 @@ ui <- navbarPage("Hockey Tracker",
                        ), # Closes fixedRow 3
                        
                        actionButton("submit2", "Submit")
-
+                       
                      )),
                    
                    fluidRow(column(12,
@@ -170,7 +170,7 @@ ui <- navbarPage("Hockey Tracker",
                    ))
                    
                  ),#Closes tabPanel 2
-
+                 
                  tabPanel(
                    "Penalties",
                    sidebarPanel(
@@ -194,37 +194,37 @@ ui <- navbarPage("Hockey Tracker",
                      
                    ),
                    mainPanel(
-                       fluidRow(column(12,
-                                       h4("Penalties"),
-                                       downloadLink("download3", "Download"),
-                                       tableOutput("table3")
-                       )) 
+                     fluidRow(column(12,
+                                     h4("Penalties"),
+                                     downloadLink("download3", "Download"),
+                                     tableOutput("table3")
+                     )) 
                    ),
                    
                  ), # Closes tabPanel 3
                  
-                tabPanel(
-                    "Summary",
-                    
-                    fluidRow(column(12,
-                                    h4("Shot Chart"),
-                                    plotOutput(
-                                        "shots",
-                                        width = "800px", height = "340px"
-                                    )
-                    )),
-                    
-                    fluidRow(column(12,
-                                    h4("Goals"),
-                                    tableOutput("table4")
-                    )),
-                    
-                    fluidRow(column(12,
-                                    h4("Penalties"),
-                                    tableOutput("table5")
-                    ))
-                )
-                
-                
-                
+                 tabPanel(
+                   "Summary",
+                   
+                   fluidRow(column(12,
+                                   h4("Shot Chart"),
+                                   plotOutput(
+                                     "shots",
+                                     width = "800px", height = "340px"
+                                   )
+                   )),
+                   
+                   fluidRow(column(12,
+                                   h4("Goals"),
+                                   tableOutput("table4")
+                   )),
+                   
+                   fluidRow(column(12,
+                                   h4("Penalties"),
+                                   tableOutput("table5")
+                   ))
+                 )
+                 
+                 
+                 
 )#Closes UI
