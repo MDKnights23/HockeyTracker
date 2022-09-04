@@ -283,7 +283,8 @@ server <- function(input, output, session){
       scale_shape_discrete(drop = FALSE)
   })
   
-  output$table4 <- renderTable(goalValues$DT)
+  output$table4 <- renderTable(goalValues$DT %>% 
+                                   select(goalScorer:secondaryAssist))
   
   output$table5 <- renderTable(penaltyValues$DT)
   
