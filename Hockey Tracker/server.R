@@ -74,15 +74,16 @@ server <- function(input, output, session){
                                 # the UI's list of Entries. Unmatched items in the 
                                 # Table go in as NA. Unmatched items in the UI are not drawn.
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
-                 
-                 x = case_when(
-                   input$period %in% c(1,3) ~ input$plot_click$x,
-                   TRUE ~ 200-input$plot_click$x
-                 ),
-                 y = case_when(
-                   input$period %in% c(1,3) ~ input$plot_click$y,
-                   TRUE ~ -1*input$plot_click$y
-                 )
+                 x = input$plot_click$x,
+                 y = input$plot_click$y
+                #x = case_when(
+                #   input$period %in% c(1,3) ~ input$plot_click$x,
+                #   TRUE ~ 200-input$plot_click$x
+                # ),
+                # y = case_when(
+                #   input$period %in% c(1,3) ~ input$plot_click$y,
+                #   TRUE ~ -1*input$plot_click$y
+                # )
                  
       )
     # add row to the data.frame
@@ -188,22 +189,22 @@ server <- function(input, output, session){
   observeEvent(input$submit2, {
     add_row2 <- 
       data.frame(                 
-                 goalScorer = input$playerG,
-                 primaryAssist = input$playerA1,
-                 secondaryAssist = input$playerA2,
-                 plus1 = input$Plus1,
-                 plus2 = input$Plus2,
-                 plus3 = input$Plus3,
-                 plus4 = input$Plus4,
-                 plus5 = input$Plus5,
-                 plus6 = input$Plus6,
-                 minus1 = input$Minus1,
-                 minus2 = input$Minus2,
-                 minus3 = input$Minus3,
-                 minus4 = input$Minus4,
-                 minus5 = input$Minus5,
-                 minus6 = input$Minus6
-                 )
+        goalScorer = input$playerG,
+        primaryAssist = input$playerA1,
+        secondaryAssist = input$playerA2,
+        plus1 = input$Plus1,
+        plus2 = input$Plus2,
+        plus3 = input$Plus3,
+        plus4 = input$Plus4,
+        plus5 = input$Plus5,
+        plus6 = input$Plus6,
+        minus1 = input$Minus1,
+        minus2 = input$Minus2,
+        minus3 = input$Minus3,
+        minus4 = input$Minus4,
+        minus5 = input$Minus5,
+        minus6 = input$Minus6
+      )
     # add row to the data.frame
     goalValues$DT <- rbind(goalValues$DT, add_row2)
   })
@@ -223,17 +224,17 @@ server <- function(input, output, session){
   
   # 12 Goals page add to dataframe
   observeEvent(input$submit3, {
-      add_row3 <- 
-          data.frame(
-              Team = input$team3,
-              Period = input$period3,
-              playerNumber = input$player3,
-              Penalty = input$event3,
-              additionalDetails = input$additional_details
-          )
-      # add row to the data.frame
-      penaltyValues$DT <- rbind(penaltyValues$DT, add_row3)
-      })
+    add_row3 <- 
+      data.frame(
+        Team = input$team3,
+        Period = input$period3,
+        playerNumber = input$player3,
+        Penalty = input$event3,
+        additionalDetails = input$additional_details
+      )
+    # add row to the data.frame
+    penaltyValues$DT <- rbind(penaltyValues$DT, add_row3)
+  })
   
   # 13 Render Penalties table
   output$table3 <- renderTable(penaltyValues$DT,
@@ -241,40 +242,45 @@ server <- function(input, output, session){
   
   # Summary tab
   output$shots = renderPlot({
-      ggplot(values$DT, aes(x = x, y = y)) +
-          #This must be on top of the points in the code or the points drawn behind    
-          background_image(img) + 
-          geom_point(aes(color = team,
-                         shape = event), size = 5) +
-          lims(x = c(0,200), y = c(-42.5, 42.5)) +
-          
-          # If we want to remove x and y labels from plot    
-          labs(x = "",
-               y = "") +
-          
-          theme(legend.position = "none", 
-                # Option 1: Remove grey background, 
-                # add more subtle grid lines (if desired)
-                panel.background = element_rect(fill = "white"),
-                panel.grid = element_line(color = "grey",
-                                          linetype = 2)) +
-          
-          # Option 2: remove lines and color from background
-          #panel.grid = element_blank(),
-          #panel.background = element_blank(),
-          #plot.margin = margin(t=5)) +
-          
-          # Option 3 Remove everything from plot but image
-          # theme_void() +
-          # theme(plot.margin = margin(5, 0, 0, 0))
-          
-          # We can only have 1 color scale set
-      scale_color_manual(values = c("Blue", "Green"), 
-                         drop = FALSE) +   
-          # scale_color_discrete(drop = FALSE) +
-          
-          # include so that colors don't change as more color/shape chosen   
-          scale_shape_discrete(drop = FALSE)
+    ggplot(values$DT, aes(
+      
+      x = x, 
+      y = y
+      
+      )) +
+      #This must be on top of the points in the code or the points drawn behind    
+      background_image(img) + 
+      geom_point(aes(color = team,
+                     shape = event), size = 5) +
+      lims(x = c(0,200), y = c(-42.5, 42.5)) +
+      
+      # If we want to remove x and y labels from plot    
+      labs(x = "",
+           y = "") +
+      
+      theme(legend.position = "none", 
+            # Option 1: Remove grey background, 
+            # add more subtle grid lines (if desired)
+            panel.background = element_rect(fill = "white"),
+            panel.grid = element_line(color = "grey",
+                                      linetype = 2)) +
+      
+      # Option 2: remove lines and color from background
+      #panel.grid = element_blank(),
+      #panel.background = element_blank(),
+      #plot.margin = margin(t=5)) +
+      
+      # Option 3 Remove everything from plot but image
+      # theme_void() +
+      # theme(plot.margin = margin(5, 0, 0, 0))
+      
+      # We can only have 1 color scale set
+    scale_color_manual(values = c("Blue", "Green"), 
+                       drop = FALSE) +   
+      # scale_color_discrete(drop = FALSE) +
+      
+      # include so that colors don't change as more color/shape chosen   
+      scale_shape_discrete(drop = FALSE)
   })
   
   output$table4 <- renderTable(goalValues$DT)
