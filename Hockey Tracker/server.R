@@ -288,4 +288,11 @@ server <- function(input, output, session){
   
   output$table5 <- renderTable(penaltyValues$DT)
   
+  # Hover over plot
+  output$plot_hoverinfo <- renderPrint({
+      cat("X = ", round(as.numeric(input$plot_hover$x), 2), ", ", 
+          "Y = ", round(as.numeric(input$plot_hover$y), 2),
+          sep = "")
+  })
+  
 }

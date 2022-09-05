@@ -67,9 +67,11 @@ ui <- navbarPage("Hockey Tracker",
                    mainPanel(
                      fluidRow(column(12,
                                      h4("Click to place event location"),
-                                     actionButton("rem_point", "Remove Last Point"),
+                                     column(12, actionButton("rem_point", "Remove Last Point")),
+                                     column(5, verbatimTextOutput("plot_hoverinfo")),
                                      plotOutput(
                                        "plot1", click = "plot_click",
+                                       hover = hoverOpts("plot_hover", delay = 300, delayType = "throttle"),
                                        # Set fixed values so plot does not 'stretch'
                                        width = "800px", height = "340px"
                                      )#This parenthesis closes the first column.
