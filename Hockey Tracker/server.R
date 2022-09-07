@@ -6,6 +6,8 @@ library(ggplot2)
 library(shinyTime)
 library(dplyr)
 
+options(shiny.sanitize.errors = TRUE)
+
 #Changing image
 img<-png::readPNG("icehockeylayout2.png")
 
@@ -290,9 +292,20 @@ server <- function(input, output, session){
   
   # Hover over plot
   output$plot_hoverinfo <- renderPrint({
-      cat("X = ", round(as.numeric(input$plot_hover$x), 2), ", ", 
+      if (isTRUE(as.numeric(input$plot_hover$x) >= 0) &
+          isTRUE(as.numeric(input$plot_hover$x) <= 200) &
+          isTRUE(as.numeric(input$plot_hover$y) >= -42.5)  &
+          isTRUE(as.numeric(input$plot_hover$y) <= 42.5)) {
+
+          cat("X = ", round(as.numeric(input$plot_hover$x), 2), ", ",
           "Y = ", round(as.numeric(input$plot_hover$y), 2),
           sep = "")
+
+      }
+
+      else {
+          cat("Values not within range")
+      }
   })
   
 }

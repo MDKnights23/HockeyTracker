@@ -67,8 +67,8 @@ ui <- navbarPage("Hockey Tracker",
                    mainPanel(
                      fluidRow(column(12,
                                      h4("Click to place event location"),
-                                     column(12, actionButton("rem_point", "Remove Last Point")),
-                                     column(5, verbatimTextOutput("plot_hoverinfo")),
+                                     actionButton("rem_point", "Remove Last Point"),
+                                     # textOutput("plot_hoverinfo"),
                                      plotOutput(
                                        "plot1", click = "plot_click",
                                        hover = hoverOpts("plot_hover", delay = 300, delayType = "throttle"),
@@ -77,6 +77,7 @@ ui <- navbarPage("Hockey Tracker",
                                      )#This parenthesis closes the first column.
                      )
                      ),#This parenthesis closes the first fluidRow.
+                     fluidRow(column(12, textOutput("plot_hoverinfo"))),
                      fluidRow(column(12,
                                      h4("Shots"),
                                      downloadLink("download1", "Download"),
