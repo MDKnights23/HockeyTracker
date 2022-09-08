@@ -171,7 +171,10 @@ server <- function(input, output, session){
   
   #8. Goals page dataframe
   goalValues <- reactiveValues()
-  goalValues$DT <- data.frame(goalScorer = numeric(),
+  goalValues$DT <- data.frame(period = factor(),
+                              time = hms::hms(),
+                              team = factor(),
+                              goalScorer = numeric(),
                               primaryAssist = numeric(),
                               secondaryAssist = numeric(),
                               plus1 = numeric(),
@@ -190,7 +193,10 @@ server <- function(input, output, session){
   #9 Goals page add to dataframe
   observeEvent(input$submit2, {
     add_row2 <- 
-      data.frame(                 
+      data.frame( 
+        period = input$period2,
+        time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
+        team = factor(input$team2, levels = c("Home", "Away")),
         goalScorer = input$playerG,
         primaryAssist = input$playerA1,
         secondaryAssist = input$playerA2,
@@ -218,8 +224,9 @@ server <- function(input, output, session){
   
   # 11 Penalties page data frame
   penaltyValues <- reactiveValues()
-  penaltyValues$DT <- data.frame(Team = factor(),
-                                 Period = numeric(),
+  penaltyValues$DT <- data.frame(Period = numeric(),
+                                 Time = hms::hms(),
+                                 Team = factor(),
                                  playerNumber = numeric(),
                                  Penalty = factor(),
                                  additionalDetails = character())
@@ -228,8 +235,9 @@ server <- function(input, output, session){
   observeEvent(input$submit3, {
     add_row3 <- 
       data.frame(
-        Team = input$team3,
         Period = input$period3,
+        Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
+        Team = input$team3,
         playerNumber = input$player3,
         Penalty = input$event3,
         additionalDetails = input$additional_details
@@ -286,7 +294,7 @@ server <- function(input, output, session){
   })
   
   output$table4 <- renderTable(goalValues$DT %>% 
-                                   select(goalScorer:secondaryAssist))
+                                   select(period:secondaryAssist))
   
   output$table5 <- renderTable(penaltyValues$DT)
   

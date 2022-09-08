@@ -117,6 +117,8 @@ ui <- navbarPage("Hockey Tracker",
                        textOutput("timeleft2"),
                        #Team Info
                        radioButtons("team2", "Team", c("Home", "Away")),
+                       # Period
+                       radioButtons("period2", "Period", c(1, 2, 3, "OT"), inline = TRUE)
                        
                      ),
                      mainPanel(
