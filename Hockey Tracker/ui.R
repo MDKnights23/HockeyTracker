@@ -211,6 +211,8 @@ ui <- navbarPage("Hockey Tracker",
                  tabPanel(
                    "Summary",
                    
+                   actionButton("go", "Take a screenshot"),
+                   
                    fluidRow(column(12,
                                    h4("Shot Chart"),
                                    plotOutput(

@@ -5,6 +5,7 @@ library(lubridate)
 library(ggplot2)
 library(shinyTime)
 library(dplyr)
+library(shinyscreenshot)
 
 options(shiny.sanitize.errors = TRUE)
 
@@ -314,6 +315,11 @@ server <- function(input, output, session){
       else {
           cat("Values not within range")
       }
+  })
+  
+  # Screenshot
+  observeEvent(input$go, {
+      screenshot()
   })
   
 }
