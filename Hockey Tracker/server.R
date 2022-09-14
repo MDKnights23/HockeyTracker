@@ -106,12 +106,26 @@ server <- function(input, output, session){
     align = 'l'
   )
   
-  ## 6. Download dataframe
-  output$download <- downloadHandler(
-    filename = paste0(Sys.Date(), ".csv"),
+  ## 6. Download dataframes
+  output$download1 <- downloadHandler(
+    filename = paste0("shots_", Sys.Date(), ".csv"),
     content = function(file) {
       readr::write_csv(values$DT, file)
     }
+  )
+  
+  output$download2 <- downloadHandler(
+      filename = paste0("goals_", Sys.Date(), ".csv"),
+      content = function(file) {
+          readr::write_csv(goalValues$DT, file)
+      }
+  )
+  
+  output$download3 <- downloadHandler(
+      filename = paste0("penalties_", Sys.Date(), ".csv"),
+      content = function(file) {
+          readr::write_csv(penaltyValues$DT, file)
+      }
   )
   
   ## 7. Timer Stuff
@@ -172,12 +186,12 @@ server <- function(input, output, session){
   
   #8. Goals page dataframe
   goalValues <- reactiveValues()
-  goalValues$DT <- data.frame(period = factor(),
-                              time = hms::hms(),
-                              team = factor(),
-                              goalScorer = numeric(),
-                              primaryAssist = numeric(),
-                              secondaryAssist = numeric(),
+  goalValues$DT <- data.frame(Period = factor(),
+                              Time = hms::hms(),
+                              Team = factor(),
+                              G = numeric(),
+                              A1 = numeric(),
+                              A2 = numeric(),
                               plus1 = numeric(),
                               plus2 = numeric(),
                               plus3 = numeric(),
@@ -195,12 +209,12 @@ server <- function(input, output, session){
   observeEvent(input$submit2, {
     add_row2 <- 
       data.frame( 
-        period = input$period2,
-        time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
-        team = factor(input$team2, levels = c("Home", "Away")),
-        goalScorer = input$playerG,
-        primaryAssist = input$playerA1,
-        secondaryAssist = input$playerA2,
+        Period = input$period2,
+        Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
+        Team = factor(input$team2, levels = c("Home", "Away")),
+        G = input$playerG,
+        A1 = input$playerA1,
+        A2 = input$playerA2,
         plus1 = input$Plus1,
         plus2 = input$Plus2,
         plus3 = input$Plus3,
@@ -228,9 +242,9 @@ server <- function(input, output, session){
   penaltyValues$DT <- data.frame(Period = numeric(),
                                  Time = hms::hms(),
                                  Team = factor(),
-                                 playerNumber = numeric(),
+                                 Player = numeric(),
                                  Penalty = factor(),
-                                 additionalDetails = character())
+                                 Details = character())
   
   # 12 Goals page add to dataframe
   observeEvent(input$submit3, {
@@ -239,9 +253,9 @@ server <- function(input, output, session){
         Period = input$period3,
         Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
         Team = input$team3,
-        playerNumber = input$player3,
+        Player = input$player3,
         Penalty = input$event3,
-        additionalDetails = input$additional_details
+        Details = input$additional_details
       )
     # add row to the data.frame
     penaltyValues$DT <- rbind(penaltyValues$DT, add_row3)
@@ -295,7 +309,7 @@ server <- function(input, output, session){
   })
   
   output$table4 <- renderTable(goalValues$DT %>% 
-                                   select(period:secondaryAssist))
+                                   select(Period:A2))
   
   output$table5 <- renderTable(penaltyValues$DT)
   
@@ -321,5 +335,13 @@ server <- function(input, output, session){
   observeEvent(input$go, {
       screenshot()
   })
+  
+  
+  # summaryHome$DT <- data.frame(Player = numeric(), # Shots table player
+  #                                Goals = numeric(), # Goals table Goals
+  #                                Assists = numeric(), # Goals table A1, A2
+  #                                Pts = numeric(), # Goals table Goals, A1, A2
+  #                                SOG = numeric()) # Shots table Event (Saved, Goal)
+  
   
 }
