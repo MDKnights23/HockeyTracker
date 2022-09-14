@@ -221,15 +221,26 @@ ui <- navbarPage("Hockey Tracker",
                                    )
                    )),
                    
-                   fluidRow(column(12,
+                   # Copy of goals and penalty tables
+                   fluidRow(column(6,
                                    h4("Goals"),
-                                   tableOutput("table4")
-                   )),
-                   
-                   fluidRow(column(12,
+                                   tableOutput("table4"),
+                   ),
+                            column(6,
                                    h4("Penalties"),
                                    tableOutput("table5")
-                   ))
+                   )),
+                   
+                   # Aggregate tables
+                   fluidRow(column(6,
+                                   h4("Home"),
+                                   tableOutput("table6"),
+                                   ),
+                            
+                            column(6,
+                                   h4("Away"),
+                                   tableOutput("table7"),
+                    ))
                  )
                  
                  
