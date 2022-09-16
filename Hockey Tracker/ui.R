@@ -61,7 +61,7 @@ ui <- navbarPage("Hockey Tracker",
                      selectInput("event", "Event", c("Blocked", "Missed", "Saved", "Goal")),
                      
                      # Situation input
-                     selectInput("situation", "Situation", situation_list)
+                     selectInput("situation1", "Situation", situation_list)
                    ), #This parenthesis closes the sidebarPanel
                    
                    mainPanel(
@@ -118,17 +118,19 @@ ui <- navbarPage("Hockey Tracker",
                        #Team Info
                        radioButtons("team2", "Team", c("Home", "Away")),
                        # Period
-                       radioButtons("period2", "Period", c(1, 2, 3, "OT"), inline = TRUE)
+                       radioButtons("period2", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+                       
+                       selectInput("situation2", "Situation", situation_list)
                        
                      ),
                      mainPanel(
                        fixedRow(
                          #numericInput field for player number
-                         column(2, numericInput("playerG", "Goal Scorer", NA, min = 0, max = 99, width = '80%')),
+                         column(2, numericInput("playerG", "Goal", NA, min = 0, max = 99, width = '80%')),
                          #numericInput field for player number
-                         column(2, numericInput("playerA1", "Primary Assist", NA, min = 0, max = 99,width = '80%')),
+                         column(2, numericInput("playerA1", "Assist 1", NA, min = 0, max = 99,width = '80%')),
                          #numericInput field for player number
-                         column(2, numericInput("playerA2", "Secondary Assist", NA, min = 0, max = 99,width = '80%')),
+                         column(2, numericInput("playerA2", "Assist 2", NA, min = 0, max = 99,width = '80%')),
                        ), # Closes fixedRow
                        
                        #Plus/Minus
@@ -190,7 +192,9 @@ ui <- navbarPage("Hockey Tracker",
                      numericInput("player3", "Player Number", 10, min = 0, max = 99),
                      
                      # Change selectInput to Event
-                     selectInput("event3", "Event", penalty_list),
+                     selectInput("event3", "Penalty", penalty_list),
+                     
+                     radioButtons("pen_minutes", "Minutes", c(2, 4, 5, 10), inline = TRUE),
                      
                      # Additional Penalty Details
                      textInput("additional_details","Additional Details", value=""),
@@ -222,7 +226,7 @@ ui <- navbarPage("Hockey Tracker",
                    )),
                    
                    # Copy of goals and penalty tables
-                   fluidRow(column(6,
+                   fixedRow(column(6,
                                    h4("Goals"),
                                    tableOutput("table4"),
                    ),
@@ -232,7 +236,7 @@ ui <- navbarPage("Hockey Tracker",
                    )),
                    
                    # Aggregate tables
-                   fluidRow(column(6,
+                   fixedRow(column(6,
                                    h4("Home"),
                                    tableOutput("table6"),
                                    ),

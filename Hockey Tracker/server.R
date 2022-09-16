@@ -70,7 +70,7 @@ server <- function(input, output, session){
       data.frame(period = input$period,
                  time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
                  team = factor(input$team, levels = c("Home", "Away")),
-                 situation = factor(input$situation),
+                 situation = factor(input$situation1),
                  number = input$player,
                  event = factor(input$event,
                                 # These are the valid DF entries, which MUST match 
@@ -79,7 +79,7 @@ server <- function(input, output, session){
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
                  x = input$plot_click$x,
                  y = input$plot_click$y
-                #x = case_when(
+                # x = case_when(
                 #   input$period %in% c(1,3) ~ input$plot_click$x,
                 #   TRUE ~ 200-input$plot_click$x
                 # ),
@@ -189,6 +189,7 @@ server <- function(input, output, session){
   goalValues$DT <- data.frame(Period = factor(),
                               Time = hms::hms(),
                               Team = factor(),
+                              Situation = factor(),
                               G = numeric(),
                               A1 = numeric(),
                               A2 = numeric(),
@@ -212,6 +213,7 @@ server <- function(input, output, session){
         Period = input$period2,
         Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
         Team = factor(input$team2, levels = c("Home", "Away")),
+        Situation = input$situation2,
         G = input$playerG,
         A1 = input$playerA1,
         A2 = input$playerA2,
@@ -244,6 +246,7 @@ server <- function(input, output, session){
                                  Team = factor(),
                                  Player = numeric(),
                                  Penalty = factor(),
+                                 Minutes = numeric(),
                                  Details = character())
   
   # 12 Goals page add to dataframe
@@ -255,6 +258,7 @@ server <- function(input, output, session){
         Team = input$team3,
         Player = input$player3,
         Penalty = input$event3,
+        Minutes = input$pen_minutes,
         Details = input$additional_details
       )
     # add row to the data.frame
@@ -311,7 +315,8 @@ server <- function(input, output, session){
   output$table4 <- renderTable(goalValues$DT %>% 
                                    select(Period:A2))
   
-  output$table5 <- renderTable(penaltyValues$DT)
+  output$table5 <- renderTable(penaltyValues$DT %>% 
+                                   select(-Details))
   
   # Hover over plot
   output$plot_hoverinfo <- renderPrint({
@@ -337,11 +342,40 @@ server <- function(input, output, session){
   })
   
   
-  # summaryHome$DT <- data.frame(Player = numeric(), # Shots table player
-  #                                Goals = numeric(), # Goals table Goals
-  #                                Assists = numeric(), # Goals table A1, A2
-  #                                Pts = numeric(), # Goals table Goals, A1, A2
-  #                                SOG = numeric()) # Shots table Event (Saved, Goal)
+  
+  output$table6 <- renderTable(values$DT %>% 
+      group_by(team) %>% 
+      summarize(Goals = sum(event == "Goal"),
+                SoG = sum(event %in% c("Goal", "Saved")),
+                ShotAttempts = sum(event %in% c("Goal", "Saved",
+                                                "Missed", "Blocked")),
+                "Corsi%" = sum(event %in% c("Goal", "Saved",
+                                            "Missed", "Blocked")) / nrow(values$DT),
+                "Fenwick%" = sum(event %in% c("Goal", "Saved",
+                                              "Missed")) / nrow(values$DT %>% filter(
+                                                  event != "Blocked"
+                                              ))
+                ) %>% 
+          filter(team == "Home") %>%
+          select(- team)
+  )
+  
+  output$table7 <- renderTable(values$DT %>% 
+      group_by(team) %>% 
+      summarize(Goals = sum(event == "Goal"),
+                SoG = sum(event %in% c("Goal", "Saved")),
+                ShotAttempts = sum(event %in% c("Goal", "Saved",
+                                                "Missed", "Blocked")),
+                "Corsi%" = sum(event %in% c("Goal", "Saved",
+                                            "Missed", "Blocked")) / nrow(values$DT),
+                "Fenwick%" = sum(event %in% c("Goal", "Saved",
+                                              "Missed")) / nrow(values$DT %>% filter(
+                                                   event != "Blocked"
+                                             ))
+                                   ) %>% 
+                                   filter(team == "Away") %>%
+                                   select(- team)
+  )
   
   
 }
