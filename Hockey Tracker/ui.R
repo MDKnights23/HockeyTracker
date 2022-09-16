@@ -199,6 +199,8 @@ ui <- navbarPage("Hockey Tracker",
                      # Additional Penalty Details
                      textInput("additional_details","Additional Details", value=""),
                      
+                     numericInput("pplay", "Goals", 0, min = 0, max = 10),
+                     
                      actionButton("submit3", "Submit")
                      
                    ),

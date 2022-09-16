@@ -247,7 +247,8 @@ server <- function(input, output, session){
                                  Player = numeric(),
                                  Penalty = factor(),
                                  Minutes = numeric(),
-                                 Details = character())
+                                 Details = character(),
+                                 Goals = numeric())
   
   # 12 Goals page add to dataframe
   observeEvent(input$submit3, {
@@ -259,7 +260,8 @@ server <- function(input, output, session){
         Player = input$player3,
         Penalty = input$event3,
         Minutes = input$pen_minutes,
-        Details = input$additional_details
+        Details = input$additional_details,
+        Goals = input$pplay
       )
     # add row to the data.frame
     penaltyValues$DT <- rbind(penaltyValues$DT, add_row3)
