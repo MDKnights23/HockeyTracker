@@ -349,6 +349,8 @@ server <- function(input, output, session){
       group_by(team) %>% 
       summarize(Goals = sum(event == "Goal"),
                 SoG = sum(event %in% c("Goal", "Saved")),
+                saved_placeholder = sum(event == "Saved") /
+                    sum(event %in% c("Saved", "Goal")),
                 ShotAttempts = sum(event %in% c("Goal", "Saved",
                                                 "Missed", "Blocked")),
                 "Corsi%" = sum(event %in% c("Goal", "Saved",
@@ -357,7 +359,12 @@ server <- function(input, output, session){
                                               "Missed")) / nrow(values$DT %>% filter(
                                                   event != "Blocked"
                                               ))
-                ) %>% 
+                ) %>%
+          mutate("Save%" = case_when(
+              team == "Away" ~ saved_placeholder[1],
+              TRUE ~ saved_placeholder[2]
+          )) %>% 
+          select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
           filter(team == "Home") %>%
           select(- team)
   )
@@ -366,6 +373,9 @@ server <- function(input, output, session){
       group_by(team) %>% 
       summarize(Goals = sum(event == "Goal"),
                 SoG = sum(event %in% c("Goal", "Saved")),
+                # Will use this column to "swap" the values"
+                saved_placeholder = sum(event == "Saved") /
+                    sum(event %in% c("Saved", "Goal")),
                 ShotAttempts = sum(event %in% c("Goal", "Saved",
                                                 "Missed", "Blocked")),
                 "Corsi%" = sum(event %in% c("Goal", "Saved",
@@ -374,9 +384,14 @@ server <- function(input, output, session){
                                               "Missed")) / nrow(values$DT %>% filter(
                                                    event != "Blocked"
                                              ))
-                                   ) %>% 
-                                   filter(team == "Away") %>%
-                                   select(- team)
+                ) %>%
+      mutate("Save%" = case_when(
+              team == "Away" ~ saved_placeholder[1],
+              TRUE ~ saved_placeholder[2]
+          )) %>% 
+      select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
+      filter(team == "Away") %>%
+      select(- team)
   )
   
   
