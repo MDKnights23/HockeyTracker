@@ -128,6 +128,13 @@ server <- function(input, output, session){
       }
   )
   
+  output$download5 <- downloadHandler(
+      filename = paste0("faceoffs_", Sys.Date(), ".csv"),
+      content = function(file) {
+          readr::write_csv(faceoffValues$DT, file)
+      }
+  )
+  
   ## 7. Timer Stuff
   # Initialize the timer, 10 seconds, not active.
   timer <- reactiveVal(0)
@@ -142,6 +149,10 @@ server <- function(input, output, session){
   })
   
   output$timeleft3 <- renderText({
+    paste("Time left: ", seconds_to_period(timer()))
+  })
+  
+  output$timeleft5 <- renderText({
     paste("Time left: ", seconds_to_period(timer()))
   })
   
@@ -393,6 +404,37 @@ server <- function(input, output, session){
       filter(team == "Away") %>%
       select(- team)
   )
+  
+  # Faceoff page data frame
+  faceoffValues <- reactiveValues()
+  faceoffValues$DT <- data.frame(Period = numeric(),
+                                 Time = hms::hms(),
+                                 Location = factor(),
+                                 P1 = numeric(),
+                                 P2 = factor(),
+                                 Attempt = numeric(),
+                                 `Tie-Up` = factor(),
+                                 Result = factor())
+  
+  observeEvent(input$submit5, {
+      add_row5 <- 
+          data.frame(
+              Period = input$period5,
+              Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
+              Location = input$location,
+              P1 = input$foplayer1,
+              P2 = input$foplayer2,
+              Attempt = input$attempt,
+              `Tie-Up` = ifelse(input$tieup == TRUE, "Y", "N"),
+              Result = input$result
+          )
+      # add row to the data.frame
+      faceoffValues$DT <- rbind(faceoffValues$DT, add_row5)
+  })
+  
+  # 13 Render Penalties table
+  output$table8 <- renderTable(faceoffValues$DT,
+                               align = "l")
   
   
 }

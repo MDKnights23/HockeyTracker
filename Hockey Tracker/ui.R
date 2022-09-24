@@ -210,7 +210,7 @@ ui <- navbarPage("Hockey Tracker",
                                      downloadLink("download3", "Download"),
                                      tableOutput("table3")
                      )) 
-                   ),
+                   )
                    
                  ), # Closes tabPanel 3
                  
@@ -247,7 +247,43 @@ ui <- navbarPage("Hockey Tracker",
                                    h4("Away"),
                                    tableOutput("table7"),
                     ))
+                 ), # Closes tabPanel 4
+                 
+                 tabPanel(
+                     "Faceoffs",
+                     sidebarPanel(
+
+                         textOutput("timeleft5"),
+                         
+                         radioButtons("period5", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+
+                         selectInput("location", "Location", c("CEN", "AZL", "AZR", "ANL",
+                                                               "ANR", "DNL", "DNR",
+                                                               "DZL", "DZR")),
+
+                         numericInput("foplayer1", "Player 1", 0, min = 0, max = 99, width = "30%"),
+
+                         numericInput("foplayer2", "Player 2", 0, min = 0, max = 99, width = "30%"),
+
+                         radioButtons("attempt", "Attempt", c("F", "B"), inline = TRUE),
+                         
+                         checkboxInput("tieup", "Tie-Up"),
+                         
+                         radioButtons("result", "Result", c("W", "L"), inline = TRUE),
+                         
+                         actionButton("submit5", "Submit")
+                         
+                     ),
+                     
+                     mainPanel(
+                         fluidRow(column(12,
+                                         h4("Faceoffs"),
+                                         downloadLink("download5", "Download"),
+                                         tableOutput("table8")
+                         )) 
+                     ) 
                  )
+                 
                  
                  
                  
