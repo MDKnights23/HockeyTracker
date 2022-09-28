@@ -412,8 +412,9 @@ server <- function(input, output, session){
                                  Location = factor(),
                                  P1 = numeric(),
                                  P2 = factor(),
-                                 Attempt = numeric(),
-                                 `Tie-Up` = factor(),
+                                 AttemptH = numeric(),
+                                 AttemptA = numeric(),
+                                 TieUp = factor(),
                                  Result = factor())
   
   observeEvent(input$submit5, {
@@ -424,8 +425,9 @@ server <- function(input, output, session){
               Location = input$location,
               P1 = input$foplayer1,
               P2 = input$foplayer2,
-              Attempt = input$attempt,
-              `Tie-Up` = ifelse(input$tieup == TRUE, "Y", "N"),
+              AttemptH = input$attempt,
+              AttemptA = input$attempt2,
+              TieUp = ifelse(input$tieup == TRUE, "Y", "N"),
               Result = input$result
           )
       # add row to the data.frame

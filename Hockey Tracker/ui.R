@@ -266,6 +266,7 @@ ui <- navbarPage("Hockey Tracker",
                          numericInput("foplayer2", "Player 2", 0, min = 0, max = 99, width = "30%"),
 
                          radioButtons("attempt", "Attempt", c("F", "B"), inline = TRUE),
+                         radioButtons("attempt2", "Attempt", c("F", "B"), inline = TRUE),
                          
                          checkboxInput("tieup", "Tie-Up"),
                          
