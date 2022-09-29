@@ -410,8 +410,8 @@ server <- function(input, output, session){
   faceoffValues$DT <- data.frame(Period = numeric(),
                                  Time = hms::hms(),
                                  Location = factor(),
-                                 P1 = numeric(),
-                                 P2 = factor(),
+                                 PlayerH = numeric(),
+                                 PlayerA = factor(),
                                  AttemptH = numeric(),
                                  AttemptA = numeric(),
                                  TieUp = factor(),
@@ -423,8 +423,8 @@ server <- function(input, output, session){
               Period = input$period5,
               Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
               Location = input$location,
-              P1 = input$foplayer1,
-              P2 = input$foplayer2,
+              PlayerH = input$foplayer1,
+              PlayerA = input$foplayer2,
               AttemptH = input$attempt,
               AttemptA = input$attempt2,
               TieUp = ifelse(input$tieup == TRUE, "Y", "N"),
@@ -434,9 +434,36 @@ server <- function(input, output, session){
       faceoffValues$DT <- rbind(faceoffValues$DT, add_row5)
   })
   
-  # 13 Render Penalties table
+  # 13 Render Faceoff table
   output$table8 <- renderTable(faceoffValues$DT,
                                align = "l")
   
+  # 14 Render Faceoff summary Home
+  output$table9 <- renderTable(faceoffValues$DT %>%
+                                   group_by(PlayerH) %>% 
+                                   summarize(W = sum(Result == "W"),
+                                             L = n() - sum(Result == "W"),
+                                             `W+L` = W + L,
+                                             `Faceoff%` = W / (`W+L`),
+                                             `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
+                                   select(Player = PlayerH,
+                                          W,
+                                          L,
+                                          `Faceoff%`,
+                                          `TieUp%`))
+  
+  # Render Faceoff summary Away
+  output$table10 <- renderTable(faceoffValues$DT %>%
+                                    group_by(PlayerA) %>% 
+                                    summarize(W = sum(Result == "L"),
+                                              L = n() - sum(Result == "L"),
+                                              `W+L` = W + L,
+                                              `Faceoff%` = W / (`W+L`),
+                                              `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
+                                    select(Player = PlayerA,
+                                           W,
+                                           L,
+                                           `Faceoff%`,
+                                           `TieUp%`))
   
 }

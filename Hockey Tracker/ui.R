@@ -261,9 +261,9 @@ ui <- navbarPage("Hockey Tracker",
                                                                "ANR", "DNL", "DNR",
                                                                "DZL", "DZR")),
 
-                         numericInput("foplayer1", "Player 1", 0, min = 0, max = 99, width = "30%"),
+                         numericInput("foplayer1", "Player H", 0, min = 0, max = 99, width = "40%"),
 
-                         numericInput("foplayer2", "Player 2", 0, min = 0, max = 99, width = "30%"),
+                         numericInput("foplayer2", "Player A", 0, min = 0, max = 99, width = "40%"),
 
                          radioButtons("attempt", "Attempt", c("F", "B"), inline = TRUE),
                          radioButtons("attempt2", "Attempt", c("F", "B"), inline = TRUE),
@@ -282,10 +282,19 @@ ui <- navbarPage("Hockey Tracker",
                                          downloadLink("download5", "Download"),
                                          tableOutput("table8")
                          )) 
-                     ) 
+                     ),
+                     
+                     fluidRow(column(12,
+                                     h4("Home Summary"),
+                                     tableOutput("table9")
+                                     )),
+                     
+                     fluidRow(column(12,
+                                     h4("Away Summary"),
+                                     tableOutput("table10")
+                     ))
                  )
-                 
-                 
+            
                  
                  
 )#Closes UI
