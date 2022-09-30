@@ -232,69 +232,72 @@ ui <- navbarPage("Hockey Tracker",
                                    h4("Goals"),
                                    tableOutput("table4"),
                    ),
-                            column(6,
-                                   h4("Penalties"),
-                                   tableOutput("table5")
+                   column(6,
+                          h4("Penalties"),
+                          tableOutput("table5")
                    )),
                    
                    # Aggregate tables
                    fixedRow(column(6,
                                    h4("Home"),
                                    tableOutput("table6"),
-                                   ),
-                            
-                            column(6,
-                                   h4("Away"),
-                                   tableOutput("table7"),
-                    ))
+                   ),
+                   
+                   column(6,
+                          h4("Away"),
+                          tableOutput("table7"),
+                   ))
                  ), # Closes tabPanel 4
                  
                  tabPanel(
-                     "Faceoffs",
-                     sidebarPanel(
-
-                         textOutput("timeleft5"),
-                         
-                         radioButtons("period5", "Period", c(1, 2, 3, "OT"), inline = TRUE),
-
-                         selectInput("location", "Location", c("CEN", "AZL", "AZR", "ANL",
-                                                               "ANR", "DNL", "DNR",
-                                                               "DZL", "DZR")),
-
-                         numericInput("foplayer1", "Player H", 0, min = 0, max = 99, width = "40%"),
-
-                         numericInput("foplayer2", "Player A", 0, min = 0, max = 99, width = "40%"),
-
-                         radioButtons("attempt", "Attempt", c("F", "B"), inline = TRUE),
-                         radioButtons("attempt2", "Attempt", c("F", "B"), inline = TRUE),
-                         
-                         checkboxInput("tieup", "Tie-Up"),
-                         
-                         radioButtons("result", "Result", c("W", "L"), inline = TRUE),
-                         
-                         actionButton("submit5", "Submit")
-                         
-                     ),
+                   "Faceoffs",
+                   sidebarPanel(
                      
-                     mainPanel(
-                         fluidRow(column(12,
-                                         h4("Faceoffs"),
-                                         downloadLink("download5", "Download"),
-                                         tableOutput("table8")
-                         )) 
-                     ),
+                     textOutput("timeleft5"),
                      
+                     radioButtons("period5", "Period", c(1, 2, 3, "OT"), inline = TRUE),
+                     
+                     selectInput("location", "Location", c("CEN", "AZL", "AZR", "ANL",
+                                                           "ANR", "DNL", "DNR",
+                                                           "DZL", "DZR")),
+                     
+                     numericInput("foplayer1", "Player H", 0, min = 0, max = 99, width = "40%"),
+                     
+                     radioButtons("attempt", "Attempt", c("F", "B"), inline = TRUE),
+                     
+                     radioButtons("result", "Result", c("W", "L"), inline = TRUE),
+                     
+                     numericInput("foplayer2", "Player A", 0, min = 0, max = 99, width = "40%"),
+                     
+                     radioButtons("attempt2", "Attempt", c("F", "B"), inline = TRUE),
+                     
+                     checkboxInput("tieup", "Tie-Up"),
+                     
+                     actionButton("submit5", "Submit"),
+                     actionButton("rem_point23", "Remove Last Point")
+                     
+                     
+                   ),
+                   
+                   mainPanel(
                      fluidRow(column(12,
-                                     h4("Home Summary"),
-                                     tableOutput("table9")
-                                     )),
-                     
-                     fluidRow(column(12,
-                                     h4("Away Summary"),
-                                     tableOutput("table10")
-                     ))
+                                     h4("Faceoffs"),
+                                     downloadLink("download5", "Download"),
+                                     tableOutput("table8")
+                     )) 
+                   ),
+                   
+                   fluidRow(column(12,
+                                   h4("Home Summary"),
+                                   tableOutput("table9")
+                   )),
+                   
+                   fluidRow(column(12,
+                                   h4("Away Summary"),
+                                   tableOutput("table10")
+                   ))
                  )
-            
+                 
                  
                  
 )#Closes UI
