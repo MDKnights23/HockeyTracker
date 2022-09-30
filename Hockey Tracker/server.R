@@ -79,14 +79,14 @@ server <- function(input, output, session){
                                 levels = c("Blocked", "Missed", "Saved", "Goal")), 
                  x = input$plot_click$x,
                  y = input$plot_click$y
-                # x = case_when(
-                #   input$period %in% c(1,3) ~ input$plot_click$x,
-                #   TRUE ~ 200-input$plot_click$x
-                # ),
-                # y = case_when(
-                #   input$period %in% c(1,3) ~ input$plot_click$y,
-                #   TRUE ~ -1*input$plot_click$y
-                # )
+                 # x = case_when(
+                 #   input$period %in% c(1,3) ~ input$plot_click$x,
+                 #   TRUE ~ 200-input$plot_click$x
+                 # ),
+                 # y = case_when(
+                 #   input$period %in% c(1,3) ~ input$plot_click$y,
+                 #   TRUE ~ -1*input$plot_click$y
+                 # )
                  
       )
     # add row to the data.frame
@@ -115,24 +115,24 @@ server <- function(input, output, session){
   )
   
   output$download2 <- downloadHandler(
-      filename = paste0("goals_", Sys.Date(), ".csv"),
-      content = function(file) {
-          readr::write_csv(goalValues$DT, file)
-      }
+    filename = paste0("goals_", Sys.Date(), ".csv"),
+    content = function(file) {
+      readr::write_csv(goalValues$DT, file)
+    }
   )
   
   output$download3 <- downloadHandler(
-      filename = paste0("penalties_", Sys.Date(), ".csv"),
-      content = function(file) {
-          readr::write_csv(penaltyValues$DT, file)
-      }
+    filename = paste0("penalties_", Sys.Date(), ".csv"),
+    content = function(file) {
+      readr::write_csv(penaltyValues$DT, file)
+    }
   )
   
   output$download5 <- downloadHandler(
-      filename = paste0("faceoffs_", Sys.Date(), ".csv"),
-      content = function(file) {
-          readr::write_csv(faceoffValues$DT, file)
-      }
+    filename = paste0("faceoffs_", Sys.Date(), ".csv"),
+    content = function(file) {
+      readr::write_csv(faceoffValues$DT, file)
+    }
   )
   
   ## 7. Timer Stuff
@@ -289,7 +289,7 @@ server <- function(input, output, session){
       x = x, 
       y = y
       
-      )) +
+    )) +
       #This must be on top of the points in the code or the points drawn behind    
       background_image(img) + 
       geom_point(aes(color = team,
@@ -326,83 +326,83 @@ server <- function(input, output, session){
   })
   
   output$table4 <- renderTable(goalValues$DT %>% 
-                                   select(Period:A2))
+                                 select(Period:A2))
   
   output$table5 <- renderTable(penaltyValues$DT %>% 
-                                   select(-Details))
+                                 select(-Details))
   
   # Hover over plot
   output$plot_hoverinfo <- renderPrint({
-      if (isTRUE(as.numeric(input$plot_hover$x) >= 0) &
-          isTRUE(as.numeric(input$plot_hover$x) <= 200) &
-          isTRUE(as.numeric(input$plot_hover$y) >= -42.5)  &
-          isTRUE(as.numeric(input$plot_hover$y) <= 42.5)) {
-
-          cat("X = ", round(as.numeric(input$plot_hover$x), 2), ", ",
+    if (isTRUE(as.numeric(input$plot_hover$x) >= 0) &
+        isTRUE(as.numeric(input$plot_hover$x) <= 200) &
+        isTRUE(as.numeric(input$plot_hover$y) >= -42.5)  &
+        isTRUE(as.numeric(input$plot_hover$y) <= 42.5)) {
+      
+      cat("X = ", round(as.numeric(input$plot_hover$x), 2), ", ",
           "Y = ", round(as.numeric(input$plot_hover$y), 2),
           sep = "")
-
-      }
-
-      else {
-          cat("Values not within range")
-      }
+      
+    }
+    
+    else {
+      cat("Values not within range")
+    }
   })
   
   # Screenshot
   observeEvent(input$go, {
-      screenshot()
+    screenshot()
   })
   
   
   
   output$table6 <- renderTable(values$DT %>% 
-      group_by(team) %>% 
-      summarize(Goals = sum(event == "Goal"),
-                SoG = sum(event %in% c("Goal", "Saved")),
-                saved_placeholder = sum(event == "Saved") /
-                    sum(event %in% c("Saved", "Goal")),
-                ShotAttempts = sum(event %in% c("Goal", "Saved",
-                                                "Missed", "Blocked")),
-                "Corsi%" = sum(event %in% c("Goal", "Saved",
-                                            "Missed", "Blocked")) / nrow(values$DT),
-                "Fenwick%" = sum(event %in% c("Goal", "Saved",
-                                              "Missed")) / nrow(values$DT %>% filter(
-                                                  event != "Blocked"
-                                              ))
-                ) %>%
-          mutate("Save%" = case_when(
-              team == "Away" ~ saved_placeholder[1],
-              TRUE ~ saved_placeholder[2]
-          )) %>% 
-          select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
-          filter(team == "Home") %>%
-          select(- team)
+                                 group_by(team) %>% 
+                                 summarize(Goals = sum(event == "Goal"),
+                                           SoG = sum(event %in% c("Goal", "Saved")),
+                                           saved_placeholder = sum(event == "Saved") /
+                                             sum(event %in% c("Saved", "Goal")),
+                                           ShotAttempts = sum(event %in% c("Goal", "Saved",
+                                                                           "Missed", "Blocked")),
+                                           "Corsi%" = sum(event %in% c("Goal", "Saved",
+                                                                       "Missed", "Blocked")) / nrow(values$DT),
+                                           "Fenwick%" = sum(event %in% c("Goal", "Saved",
+                                                                         "Missed")) / nrow(values$DT %>% filter(
+                                                                           event != "Blocked"
+                                                                         ))
+                                 ) %>%
+                                 mutate("Save%" = case_when(
+                                   team == "Away" ~ saved_placeholder[1],
+                                   TRUE ~ saved_placeholder[2]
+                                 )) %>% 
+                                 select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
+                                 filter(team == "Home") %>%
+                                 select(- team)
   )
   
   output$table7 <- renderTable(values$DT %>% 
-      group_by(team) %>% 
-      summarize(Goals = sum(event == "Goal"),
-                SoG = sum(event %in% c("Goal", "Saved")),
-                # Will use this column to "swap" the values"
-                saved_placeholder = sum(event == "Saved") /
-                    sum(event %in% c("Saved", "Goal")),
-                ShotAttempts = sum(event %in% c("Goal", "Saved",
-                                                "Missed", "Blocked")),
-                "Corsi%" = sum(event %in% c("Goal", "Saved",
-                                            "Missed", "Blocked")) / nrow(values$DT),
-                "Fenwick%" = sum(event %in% c("Goal", "Saved",
-                                              "Missed")) / nrow(values$DT %>% filter(
-                                                   event != "Blocked"
-                                             ))
-                ) %>%
-      mutate("Save%" = case_when(
-              team == "Away" ~ saved_placeholder[1],
-              TRUE ~ saved_placeholder[2]
-          )) %>% 
-      select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
-      filter(team == "Away") %>%
-      select(- team)
+                                 group_by(team) %>% 
+                                 summarize(Goals = sum(event == "Goal"),
+                                           SoG = sum(event %in% c("Goal", "Saved")),
+                                           # Will use this column to "swap" the values"
+                                           saved_placeholder = sum(event == "Saved") /
+                                             sum(event %in% c("Saved", "Goal")),
+                                           ShotAttempts = sum(event %in% c("Goal", "Saved",
+                                                                           "Missed", "Blocked")),
+                                           "Corsi%" = sum(event %in% c("Goal", "Saved",
+                                                                       "Missed", "Blocked")) / nrow(values$DT),
+                                           "Fenwick%" = sum(event %in% c("Goal", "Saved",
+                                                                         "Missed")) / nrow(values$DT %>% filter(
+                                                                           event != "Blocked"
+                                                                         ))
+                                 ) %>%
+                                 mutate("Save%" = case_when(
+                                   team == "Away" ~ saved_placeholder[1],
+                                   TRUE ~ saved_placeholder[2]
+                                 )) %>% 
+                                 select(team:SoG, "Save%", ShotAttempts:"Fenwick%") %>% 
+                                 filter(team == "Away") %>%
+                                 select(- team)
   )
   
   # Faceoff page data frame
@@ -418,52 +418,63 @@ server <- function(input, output, session){
                                  Result = factor())
   
   observeEvent(input$submit5, {
-      add_row5 <- 
-          data.frame(
-              Period = input$period5,
-              Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
-              Location = input$location,
-              PlayerH = input$foplayer1,
-              PlayerA = input$foplayer2,
-              AttemptH = input$attempt,
-              AttemptA = input$attempt2,
-              TieUp = ifelse(input$tieup == TRUE, "Y", "N"),
-              Result = input$result
-          )
-      # add row to the data.frame
-      faceoffValues$DT <- rbind(faceoffValues$DT, add_row5)
+    add_row5 <- 
+      data.frame(
+        Period = input$period5,
+        Time = strftime(hms::hms(seconds_to_period(timer())), "%M:%S"),
+        Location = input$location,
+        PlayerH = input$foplayer1,
+        AttemptH = input$attempt,
+        Result = input$result,
+        
+        PlayerA = input$foplayer2,
+        AttemptA = input$attempt2,
+        
+        
+        TieUp = ifelse(input$tieup == TRUE, "Y", "N")
+      
+      )
+    # add row to the data.frame
+    faceoffValues$DT <- rbind(faceoffValues$DT, add_row5)
+    
+    observeEvent(input$rem_point23, {
+      rem_row <- faceoffValues$DT[-nrow(faceoffValues$DT), ]
+      faceoffValues$DT <- rem_row
+    })
   })
   
   # 13 Render Faceoff table
   output$table8 <- renderTable(faceoffValues$DT,
                                align = "l")
   
+  
+  
   # 14 Render Faceoff summary Home
   output$table9 <- renderTable(faceoffValues$DT %>%
-                                   group_by(PlayerH) %>% 
-                                   summarize(W = sum(Result == "W"),
-                                             L = n() - sum(Result == "W"),
-                                             `W+L` = W + L,
-                                             `Faceoff%` = W / (`W+L`),
-                                             `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
-                                   select(Player = PlayerH,
-                                          W,
-                                          L,
-                                          `Faceoff%`,
-                                          `TieUp%`))
+                                 group_by(PlayerH) %>% 
+                                 summarize(W = sum(Result == "W"),
+                                           L = n() - sum(Result == "W"),
+                                           `W+L` = W + L,
+                                           `Faceoff%` = W / (`W+L`),
+                                           `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
+                                 select(Player = PlayerH,
+                                        W,
+                                        L,
+                                        `Faceoff%`,
+                                        `TieUp%`))
   
   # Render Faceoff summary Away
   output$table10 <- renderTable(faceoffValues$DT %>%
-                                    group_by(PlayerA) %>% 
-                                    summarize(W = sum(Result == "L"),
-                                              L = n() - sum(Result == "L"),
-                                              `W+L` = W + L,
-                                              `Faceoff%` = W / (`W+L`),
-                                              `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
-                                    select(Player = PlayerA,
-                                           W,
-                                           L,
-                                           `Faceoff%`,
-                                           `TieUp%`))
+                                  group_by(PlayerA) %>% 
+                                  summarize(W = sum(Result == "L"),
+                                            L = n() - sum(Result == "L"),
+                                            `W+L` = W + L,
+                                            `Faceoff%` = W / (`W+L`),
+                                            `TieUp%` = sum(TieUp == "Y") / `W+L`) %>% 
+                                  select(Player = PlayerA,
+                                         W,
+                                         L,
+                                         `Faceoff%`,
+                                         `TieUp%`))
   
 }
