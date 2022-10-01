@@ -434,14 +434,18 @@ server <- function(input, output, session){
         TieUp = ifelse(input$tieup == TRUE, "Y", "N")
       
       )
+    
     # add row to the data.frame
     faceoffValues$DT <- rbind(faceoffValues$DT, add_row5)
     
+    })
+    
+    # Needs to be outside of the observeEvent for adding row to faceoff DF
     observeEvent(input$rem_point23, {
       rem_row <- faceoffValues$DT[-nrow(faceoffValues$DT), ]
       faceoffValues$DT <- rem_row
     })
-  })
+  
   
   # 13 Render Faceoff table
   output$table8 <- renderTable(faceoffValues$DT,
